@@ -9,9 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class File {
-    String fileid;
-    String name;
-    long size;
+    private String fileid;
+    private String name;
+    private long size;
 
     public File() {
     }

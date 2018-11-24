@@ -32,8 +32,8 @@ public class FileClient {
         final String uri = "http://localhost:8080/files";
 
         List<File> files = new ArrayList<>();
-        files.add(new File("0001","lol",12));
-        files.add(new File("0002","jpp",1255555555));
+        files.add(new File("lol",12));
+        files.add(new File("jpp",1255555555));
 
         RestTemplate restTemplate = new RestTemplate();
 
