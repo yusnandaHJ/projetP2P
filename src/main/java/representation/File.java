@@ -1,5 +1,7 @@
 package representation;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -18,15 +20,16 @@ public class File {
         Path file = FileSystems.getDefault().getPath("shared",name);
         BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
-        this.fileid = fileid;
         this.name = file.getFileName().toString();
         this.size = attr.size();
+        this.fileid = DigestUtils.sha256Hex(this.name+this.size);
+
     }
 
     public File(String fileid, String name, long size) {
-        this.fileid = fileid;
         this.name = name;
         this.size = size;
+        this.fileid = DigestUtils.sha256Hex(this.name+this.size);
     }
 
     /*public File(String path){
