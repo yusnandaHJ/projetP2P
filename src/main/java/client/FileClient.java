@@ -1,9 +1,7 @@
 package client;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import representation.File;
-import representation.FileList;
 
 import java.util.ArrayList;
 import java.util.List;
