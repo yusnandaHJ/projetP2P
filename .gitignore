@@ -5,6 +5,7 @@
 .metadata/
 
 # Intellij
+shared/fichiers
 .idea/
 *.iml
 *.iws
