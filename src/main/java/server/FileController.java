@@ -4,11 +4,23 @@ import org.springframework.web.bind.annotation.*;
 import representation.File;
 import helper.FileUploadResponse;
 
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class FileController {
+
+    @GetMapping("/test")
+    public File test() throws IOException {
+        //Example
+
+        return new File("001","test.json");
+    }
 
     /**
      * Rest GET Handler pour récupérer un unique fichier
