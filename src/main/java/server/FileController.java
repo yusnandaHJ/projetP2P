@@ -1,8 +1,11 @@
 package server;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import representation.File;
 import helper.FileUploadResponse;
+import representation.FileList;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -29,7 +32,7 @@ public class FileController {
     @GetMapping("/files/{fileId}")
     public File getFile(@PathVariable String fileId){
         //Example
-        return new File("0001","fichier1",12);
+        return new File("0001","fichier1",1666666);
     }
 
     /**
@@ -69,23 +72,15 @@ public class FileController {
      * @return
      */
     @PostMapping("/files")
-    public List<FileUploadResponse> uploadFiles() {
+    public ResponseEntity<List<File>> uploadFiles(@RequestBody List<File> files) {
         //Example
-        List<FileUploadResponse> responseList = new ArrayList<>();
+        //files.stream().forEach(f -> f.getFileid());
+        //System.out.println(files.get(0).getSize());
 
-        FileUploadResponse response1 = new FileUploadResponse();
-        response1.setCle1("fichier1");
-        response1.setCle2("toto");
-        response1.setCle3("nintendo switch1");
 
-        FileUploadResponse response2 = new FileUploadResponse();
-        response2.setCle1("fichier2");
-        response2.setCle2("toto");
-        response2.setCle3("nintendo switch2");
-
-        responseList.add(response1);
-        responseList.add(response2);
-        return responseList;
+        // TODO: call persistence layer to update
+        return new ResponseEntity<>(files, HttpStatus.OK);
+        //return files.getFiles();
     }
 
 
