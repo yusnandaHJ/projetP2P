@@ -16,7 +16,7 @@ public class File {
     public File() {
     }
 
-    public File(String fileid, String name) throws IOException {
+    public File(String name) throws IOException {
         Path file = FileSystems.getDefault().getPath("shared",name);
         BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
@@ -26,15 +26,11 @@ public class File {
 
     }
 
-    public File(String fileid, String name, long size) {
+    public File(String name, long size) {
         this.name = name;
         this.size = size;
         this.fileid = DigestUtils.sha256Hex(this.name+this.size);
     }
-
-    /*public File(String path){
-        Path file = FileSystems.getDefault();
-    }*/
 
     public String getFileid() {
         return fileid;

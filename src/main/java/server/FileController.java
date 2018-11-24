@@ -92,8 +92,7 @@ public class FileController {
     public File uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = fileStorageService.storeFile(file);
 
-        Timestamp ts = new Timestamp(System.currentTimeMillis());
-        File fileToAdd = new File("3P2P" + ts.getTime(), fileName, file.getSize());
+        File fileToAdd = new File(fileName, file.getSize());
 
         fileList.add(fileToAdd);
 
