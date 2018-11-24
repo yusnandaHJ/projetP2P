@@ -1,34 +1,38 @@
 package server;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import helper.FileUploadResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import representation.File;
-import helper.FileUploadResponse;
-import representation.FileList;
 import service.FileStorageService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
 
 @RestController
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
+
+    private String storageDirectoryPath = "./shared/fichiers/";
+    private String persistenceFilePath="./shared/listeFichier.json";
+
     private List<File> fileList = new ArrayList<>();
+    private java.io.File persistenceFile = new java.io.File(this.persistenceFilePath);
 
     @Autowired
     private FileStorageService fileStorageService;
@@ -43,6 +47,7 @@ public class FileController {
     public ResponseEntity<Resource> getFile(@PathVariable String fileId, HttpServletRequest request) {
         // Récupére les fichiers en tant que Resource
         String fileName = null;
+
         for(File file : fileList){
             if(file.getFileid().equals(fileId)){
                 fileName = file.getName();
@@ -77,10 +82,14 @@ public class FileController {
      */
     @GetMapping("/files")
     public List<File> getFileList() {
-        /*Initialiser fileList en ce basant sur listeFichier.json*/
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            fileList = mapper.readValue(persistenceFile, new TypeReference<List<File>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return this.fileList;
     }
-
 
     /**
      * Rest POST Handler pour envoyer un unique fichier
@@ -94,8 +103,15 @@ public class FileController {
 
         File fileToAdd = new File(fileName, file.getSize());
 
-        fileList.add(fileToAdd);
-
+        if(fileList.stream().noneMatch(o -> o.getFileid().equals(fileToAdd.getFileid()))) {
+            fileList.add(fileToAdd);
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                mapper.writeValue(persistenceFile, fileList);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return fileToAdd;
     }
 
@@ -117,7 +133,6 @@ public class FileController {
         //return files.getFiles();
     }
 
-
     /**
      * Rest DELETE Handler pour supprimer une liste de fichiers
      *
@@ -125,7 +140,23 @@ public class FileController {
      * @return
      */
     @DeleteMapping("/files/{fileId}")
-    public void deleteFile() {
-        //TODO
+    public void deleteFile(@PathVariable String fileId) {
+        String fileName = null;
+        //for(File file : fileList){
+        for(Iterator<File> fileIterator = fileList.iterator(); fileIterator.hasNext();){
+            File file = fileIterator.next();
+            if(file.getFileid().equals(fileId)){
+                fileName = file.getName();
+                java.io.File fileToDelete = new java.io.File(this.storageDirectoryPath + fileName);
+                fileIterator.remove();
+                fileToDelete.delete();
+            }
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(persistenceFile, fileList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

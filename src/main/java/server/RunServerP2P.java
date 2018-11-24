@@ -17,7 +17,7 @@ public class RunServerP2P {
     public static void main(String[] args) {
         SpringApplication.run(RunServerP2P.class, args);
         FileClient.getFiles();
-        //FileClient.getFile("oui");
+        FileClient.getFile("6fab43fcb5c8a53b1693bad716e20055023419c52fb584ca6c7c51e4f8cf04da");
         FileClient.updateFiles();
         List<Peer> peers = new ArrayList();
 
