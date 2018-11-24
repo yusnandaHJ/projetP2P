@@ -18,7 +18,6 @@ public class FileController {
     @GetMapping("/test")
     public File test() throws IOException {
         //Example
-
         return new File("001","test.json");
     }
 
