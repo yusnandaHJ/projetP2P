@@ -1,11 +1,7 @@
 package client;
 
 import org.springframework.web.client.RestTemplate;
-import representation.File;
 import representation.Peer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PeerClient {
 
