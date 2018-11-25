@@ -17,7 +17,7 @@ public class File {
     }
 
     public File(String name) throws IOException {
-        Path file = FileSystems.getDefault().getPath("shared",name);
+        Path file = FileSystems.getDefault().getPath("shared/fichiers",name);
         BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
         this.name = file.getFileName().toString();
