@@ -3,6 +3,9 @@ package client;
 import org.springframework.web.client.RestTemplate;
 import representation.Peer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Classe des fonctions gérant les pairs côté client
  */
@@ -37,8 +40,13 @@ public class PeerClient {
     /**
      * Fonction de gestion du DELETE de l'URL /peers/url côté client
      */
-    public static void unregisterPeer(String url) {
+    public static void unregisterPeer(String peerid) {
+        String desturi = uri+"/{peerid}";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("peerid",peerid);
+
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(desturi,params);
 
         //System.out.println(result);
     }
