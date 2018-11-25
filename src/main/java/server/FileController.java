@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-
+/**
+ * Classe controller des requêtes rest concernant les fichiers côté serveur
+ */
 @RestController
 public class FileController {
 
@@ -31,9 +33,6 @@ public class FileController {
 
     /**
      * Rest GET Handler pour récupérer les données d'un unique fichier
-     *
-     * @param fileId
-     * @return
      */
     @GetMapping("/files/{fileId}")
     public ResponseEntity<Resource> getFile(@PathVariable String fileId, HttpServletRequest request) {
@@ -68,20 +67,14 @@ public class FileController {
 
     /**
      * Rest GET Handler pour récupérer une liste de fichiers
-     *
-     * @param
-     * @return
      */
     @GetMapping("/files")
-    public List<File> getFileList() throws IOException {
-        return FilesListManager.getSharedList();
+    public List<File> getFileList() {
+        return FilesListManager.readFiles();
     }
 
     /**
      * Rest POST Handler pour envoyer un unique fichier
-     *
-     * @param file
-     * @return
      */
     @PostMapping("/files/{fileId}")
     public File uploadFile(@RequestParam("file") MultipartFile file) {
@@ -99,9 +92,6 @@ public class FileController {
 
     /**
      * Rest POST Handler pour envoyer une liste de fichiers
-     *
-     * @param
-     * @return
      */
     @PostMapping("/files")
     public ResponseEntity<List<File>> uploadFiles(@RequestBody List<File> files) {
@@ -117,9 +107,6 @@ public class FileController {
 
     /**
      * Rest DELETE Handler pour supprimer une liste de fichiers
-     *
-     * @param
-     * @return
      */
     @DeleteMapping("/files/{fileId}")
     public void deleteFile(@PathVariable String fileId) {
