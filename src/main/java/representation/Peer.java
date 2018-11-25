@@ -1,6 +1,9 @@
 package representation;
 
-public class Peer implements java.io.Serializable{
+/**
+ * Classe réprensentant nos entités "Pair" au sens du projetP2P
+ */
+public class Peer implements java.io.Serializable {
     private String peerid;
     private String url;
 

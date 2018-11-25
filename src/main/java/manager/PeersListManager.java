@@ -8,10 +8,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe gérant le fichier de persistence des listes des pairs découvert dans un réseau
+ */
 public class PeersListManager {
 
     private static final java.io.File peerPersistenceFile = new java.io.File("./src/main/resources/listePairs.json");
 
+    /**
+     * Enregistre la liste de fichier dans le fichier listePairs.json
+     */
     public static void savePeers(List<Peer> peers) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -21,6 +27,9 @@ public class PeersListManager {
         }
     }
 
+    /**
+     * Lit la liste de fichier dans le fichier listePairs.json
+     */
     public static List<Peer> readPeers() {
         List<Peer> peers = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
@@ -33,29 +42,4 @@ public class PeersListManager {
         return peers;
     }
 
-    //public static void savePeers(List<Peer> peers){
-    //    try {
-    //        FileOutputStream out = new FileOutputStream("./shared/listePairs.json");
-    //        ObjectOutputStream oos = new ObjectOutputStream(out);
-    //        oos.writeObject(peers);
-    //        oos.flush();
-    //    } catch (Exception e) {
-    //        System.out.println("Problem serializing: " + e);
-    //    }
-    //}
-//
-    //public static List<Peer> readPeers(){
-    //    List<Peer> peers = new ArrayList<>();
-    //    try {
-    //        FileInputStream in = new FileInputStream("./shared/listePairs.json");
-    //        ObjectInputStream ois = new ObjectInputStream(in);
-    //        peers = (List) (ois.readObject());
-    //        ois.close();
-    //        in.close();
-    //        return peers;
-    //    } catch (Exception e) {
-    //        System.out.println("Problem serializing: " + e);
-    //    }
-    //    return peers;
-    //}
 }

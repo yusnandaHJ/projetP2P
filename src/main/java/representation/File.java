@@ -8,6 +8,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
+/**
+ * Classe réprensentant nos entités "Fichier" au sens du projetP2P
+ * Attention à ne pas confondre avec java.io.File
+ */
 public class File {
     private String fileid;
     private String name;
@@ -17,19 +21,19 @@ public class File {
     }
 
     public File(String name) throws IOException {
-        Path file = FileSystems.getDefault().getPath("shared/fichiers",name);
+        Path file = FileSystems.getDefault().getPath("./shared", name);
         BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
         this.name = file.getFileName().toString();
         this.size = attr.size();
-        this.fileid = DigestUtils.sha256Hex(this.name+this.size);
+        this.fileid = DigestUtils.sha256Hex(this.name + this.size);
 
     }
 
     public File(String name, long size) {
         this.name = name;
         this.size = size;
-        this.fileid = DigestUtils.sha256Hex(this.name+this.size);
+        this.fileid = DigestUtils.sha256Hex(this.name + this.size);
     }
 
     public String getFileid() {
@@ -43,6 +47,7 @@ public class File {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
