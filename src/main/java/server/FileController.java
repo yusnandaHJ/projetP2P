@@ -1,7 +1,6 @@
 package server;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import manager.FilesListManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import service.FileStorageService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -26,13 +24,7 @@ import java.util.List;
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-
-
-    private String storageDirectoryPath = "./shared/fichiers/";
-    private String persistenceFilePath="./shared/listeFichier.json";
-
-    private List<File> fileList = new ArrayList<>();
-    private java.io.File persistenceFile = new java.io.File(this.persistenceFilePath);
+    private String storageDirectoryPath = "./shared/";
 
     @Autowired
     private FileStorageService fileStorageService;
@@ -48,8 +40,8 @@ public class FileController {
         // Récupére les fichiers en tant que Resource
         String fileName = null;
 
-        for(File file : fileList){
-            if(file.getFileid().equals(fileId)){
+        for (File file : FilesListManager.readFiles()) {
+            if (file.getFileid().equals(fileId)) {
                 fileName = file.getName();
             }
         }
@@ -82,13 +74,7 @@ public class FileController {
      */
     @GetMapping("/files")
     public List<File> getFileList() {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            fileList = mapper.readValue(persistenceFile, new TypeReference<List<File>>(){});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return this.fileList;
+        return FilesListManager.readFiles();
     }
 
     /**
@@ -99,18 +85,14 @@ public class FileController {
      */
     @PostMapping("/files/{fileId}")
     public File uploadFile(@RequestParam("file") MultipartFile file) {
+        List<File> fileList = FilesListManager.readFiles();
         String fileName = fileStorageService.storeFile(file);
 
         File fileToAdd = new File(fileName, file.getSize());
 
-        if(fileList.stream().noneMatch(o -> o.getFileid().equals(fileToAdd.getFileid()))) {
+        if (fileList.stream().noneMatch(o -> o.getFileid().equals(fileToAdd.getFileid()))) {
             fileList.add(fileToAdd);
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                mapper.writeValue(persistenceFile, fileList);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            FilesListManager.saveFiles(fileList);
         }
         return fileToAdd;
     }
@@ -141,22 +123,17 @@ public class FileController {
      */
     @DeleteMapping("/files/{fileId}")
     public void deleteFile(@PathVariable String fileId) {
+        List<File> fileList = FilesListManager.readFiles();
         String fileName = null;
-        //for(File file : fileList){
-        for(Iterator<File> fileIterator = fileList.iterator(); fileIterator.hasNext();){
+        for (Iterator<File> fileIterator = fileList.iterator(); fileIterator.hasNext(); ) {
             File file = fileIterator.next();
-            if(file.getFileid().equals(fileId)){
+            if (file.getFileid().equals(fileId)) {
                 fileName = file.getName();
                 java.io.File fileToDelete = new java.io.File(this.storageDirectoryPath + fileName);
                 fileIterator.remove();
                 fileToDelete.delete();
             }
         }
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            mapper.writeValue(persistenceFile, fileList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FilesListManager.saveFiles(fileList);
     }
 }

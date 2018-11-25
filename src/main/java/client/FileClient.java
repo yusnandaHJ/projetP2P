@@ -8,13 +8,13 @@ import java.util.List;
 
 public class FileClient {
 
+    private static final String uri = "http://localhost:8080/files";
+    //private static final String uri = "http://192.168.0.4:7878/files";
     /*
     GET /files
      */
     public static void getFiles()
     {
-        final String uri = "http://localhost:8080/files";
-
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(uri, String.class);
 
@@ -26,9 +26,6 @@ public class FileClient {
      */
     public static void updateFiles()
     {
-
-        final String uri = "http://localhost:8080/files";
-
         List<File> files = new ArrayList<>();
         files.add(new File("lol",12));
         files.add(new File("jpp",1255555555));
@@ -42,10 +39,8 @@ public class FileClient {
 
     public static void getFile(String fileid)
     {
-        final String uri = "http://localhost:8080/files/"+fileid;
-
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
+        String result = restTemplate.getForObject(uri+"/"+fileid, String.class);
 
         System.out.println(result);
     }

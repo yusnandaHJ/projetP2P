@@ -1,7 +1,7 @@
 package server;
 
 import client.FileClient;
-import org.apache.commons.codec.digest.DigestUtils;
+import manager.PeersListManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,18 +19,15 @@ public class RunServerP2P {
         FileClient.getFiles();
         FileClient.getFile("6fab43fcb5c8a53b1693bad716e20055023419c52fb584ca6c7c51e4f8cf04da");
         FileClient.updateFiles();
-        List<Peer> peers = new ArrayList();
 
-        peers = PeersList.readPeers();
-        for (Peer p: peers
-             ) {
+        List<Peer> peers = new ArrayList();
+        peers.add(new Peer("001","xxaax"));
+        peers.add(new Peer("002","zzzuuz"));
+        PeersListManager.savePeers(peers);
+
+        peers = PeersListManager.readPeers();
+        for (Peer p: peers) {
             System.out.println(p.getUrl());
         }
-        
-        peers.add(new Peer("001","xxxxxx"));
-        peers.add(new Peer("002","zzzzzz"));
-        PeersList.savePeers(peers);
-        
-        
     }
 }
