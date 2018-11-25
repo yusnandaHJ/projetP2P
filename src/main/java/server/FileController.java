@@ -73,8 +73,8 @@ public class FileController {
      * @return
      */
     @GetMapping("/files")
-    public List<File> getFileList() {
-        return FilesListManager.readFiles();
+    public List<File> getFileList() throws IOException {
+        return FilesListManager.getSharedList();
     }
 
     /**
