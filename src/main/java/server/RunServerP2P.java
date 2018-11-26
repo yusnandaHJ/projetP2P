@@ -1,6 +1,7 @@
 package server;
 
 import client.FileClient;
+import manager.FilesListManager;
 import manager.PeersListManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,8 +35,9 @@ public class RunServerP2P {
             System.out.println(p.getUrl());
         }*/
         List<File> sharedFiles = getSharedList();
-        for (File f: sharedFiles) {
-            System.out.println(f.getFileid()+" === "+f.getName()+" === "+f.getSize());
-        }
+        FilesListManager.saveFiles(getSharedList());
+        //for (File f: sharedFiles) {
+          //  System.out.println(f.getFileid()+" === "+f.getName()+" === "+f.getSize());
+        //}
     }
 }
