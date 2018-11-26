@@ -4,7 +4,9 @@ import org.springframework.web.client.RestTemplate;
 import representation.File;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Classe des fonctions gérant les fichiers côté client
@@ -47,6 +49,19 @@ public class FileClient {
         String result = restTemplate.getForObject(uri + "/" + fileid, String.class);
 
         System.out.println(result);
+    }
+
+    /**
+     * Fonction de gestion du DELETE de l'URL /files/[fileId} côté client
+     */
+    public static void deleteFile(String fileid) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("fileId",fileid);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(uri+"/{fileId}",params);
+
+        //System.out.println(result);
     }
 
 

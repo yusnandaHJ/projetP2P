@@ -69,8 +69,8 @@ public class FileController {
      * Rest GET Handler pour récupérer une liste de fichiers
      */
     @GetMapping("/files")
-    public List<File> getFileList() {
-        return FilesListManager.readFiles();
+    public List<File> getFileList() throws IOException {
+        return FilesListManager.getSharedList();
     }
 
     /**
