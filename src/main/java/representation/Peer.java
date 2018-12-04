@@ -30,4 +30,12 @@ public class Peer implements java.io.Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    @Override
+    public String toString() {
+        return "Peer{" +
+                "peerid='" + peerid + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

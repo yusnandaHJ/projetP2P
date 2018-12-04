@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.MainFrame">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="861" height="676"/>
+    </constraints>
+    <properties>
+      <font name="Segoe UI"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="5155f" binding="menuTabbedPane">
+        <constraints>
+          <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties>
+          <tabPlacement value="2"/>
+        </properties>
+        <border type="none" title="Menu" title-justification="1" title-position="3">
+          <font name="Segoe UI"/>
+        </border>
+        <children>
+          <grid id="f335b" binding="homePanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Téléchargements"/>
+            </constraints>
+            <properties/>
+            <border type="none">
+              <font name="Segoe UI"/>
+            </border>
+            <children>
+              <grid id="bc9f9" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="34014" class="javax.swing.JLabel" binding="fileListLabel">
+                    <constraints/>
+                    <properties>
+                      <text value="Liste des fichiers"/>
+                    </properties>
+                  </component>
+                  <component id="b3d74" class="javax.swing.JButton" binding="refreshFileListButton">
+                    <constraints/>
+                    <properties>
+                      <horizontalAlignment value="0"/>
+                      <horizontalTextPosition value="11"/>
+                      <text value="Rafraichir"/>
+                      <verifyInputWhenFocusTarget value="false"/>
+                      <verticalTextPosition value="0"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <scrollpane id="e5a45">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="df8d6" class="javax.swing.JList" binding="fileList">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <foreground color="-16777216"/>
+                      <model/>
+                      <visible value="true"/>
+                    </properties>
+                    <clientProperties>
+                      <List.isFileList class="java.lang.Boolean" value="false"/>
+                      <html.disable class="java.lang.Boolean" value="false"/>
+                    </clientProperties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="13c23" binding="parametersPanel" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Paramètres"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <vspacer id="cca52">
+                <constraints>
+                  <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="96dd8" class="javax.swing.JLabel" binding="portParamLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Port de connexion"/>
+                </properties>
+              </component>
+              <component id="d1a41" class="javax.swing.JLabel" binding="selectedFolderParamLabel">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Répertoire à partager"/>
+                </properties>
+              </component>
+              <grid id="55dde" layout-manager="FlowLayout" hgap="10" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="e4b3e" class="javax.swing.JButton" binding="selectFolderButton">
+                    <constraints/>
+                    <properties>
+                      <horizontalAlignment value="0"/>
+                      <text value="Choisir un dossier"/>
+                    </properties>
+                  </component>
+                  <component id="e49a8" class="javax.swing.JLabel" binding="selectedFolder">
+                    <constraints/>
+                    <properties>
+                      <foreground color="-7562821"/>
+                      <text value="Label"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="230d8" layout-manager="FlowLayout" hgap="10" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="b4ae5" class="javax.swing.JTextField" binding="portParamField">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <horizontalAlignment value="10"/>
+                      <inheritsPopupMenu value="true"/>
+                      <margin top="2" left="5" bottom="2" right="5"/>
+                      <minimumSize width="100" height="30"/>
+                      <preferredSize width="100" height="30"/>
+                    </properties>
+                    <clientProperties>
+                      <caretAspectRatio class="java.lang.Double" value="0.0"/>
+                      <caretWidth class="java.lang.Integer" value="0"/>
+                      <html.disable class="java.lang.Boolean" value="true"/>
+                    </clientProperties>
+                  </component>
+                  <component id="720b1" class="javax.swing.JLabel" binding="defaultPortParam">
+                    <constraints/>
+                    <properties>
+                      <foreground color="-7562821"/>
+                      <text value="Label"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="fe0ea" class="javax.swing.JLabel" binding="peerParamLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Ajouter un pair"/>
+                </properties>
+              </component>
+              <grid id="e4a6" layout-manager="FlowLayout" hgap="10" vgap="5" flow-align="0">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <visible value="true"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="1905f" class="javax.swing.JTextField" binding="peerParamField">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <foreground color="-16777216"/>
+                      <opaque value="false"/>
+                      <preferredSize width="100" height="30"/>
+                    </properties>
+                    <clientProperties>
+                      <caretAspectRatio class="java.lang.Double" value="0.0"/>
+                      <caretWidth class="java.lang.Integer" value="0"/>
+                      <html.disable class="java.lang.Boolean" value="true"/>
+                    </clientProperties>
+                  </component>
+                  <component id="9e3e0" class="javax.swing.JLabel" binding="peerParam">
+                    <constraints/>
+                    <properties>
+                      <foreground color="-7562821"/>
+                      <text value="Label"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <component id="bae5b" class="javax.swing.JButton" binding="saveParamsButton">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <horizontalTextPosition value="10"/>
+                  <iconTextGap value="4"/>
+                  <text value="Enregistrer"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>

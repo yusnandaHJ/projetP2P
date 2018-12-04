@@ -59,5 +59,10 @@ public class File {
     public void setSize(long size) {
         this.size = size;
     }
+
+    @Override
+    public String toString() {
+        return name + " - " + size + " octets";
+    }
 }
 
