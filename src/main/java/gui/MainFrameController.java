@@ -12,10 +12,10 @@ import java.util.List;
 
 public class MainFrameController {
     public static final int DEFAULT_PORT = 0;
-    public static final String DEFAULT_FOLDER_PATH = "None";
+    public static final String DEFAULT_FOLDER_PATH = "/shared_folder";
 
     private int connectionPort;
-    private String selectedFolderPath;
+    private String selectedFolderPath = DEFAULT_FOLDER_PATH;
     private List<Peer> peerList;
     private List<File> fileList;
     private MainFrame mainframe;

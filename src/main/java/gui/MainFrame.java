@@ -42,7 +42,13 @@ public class MainFrame extends JFrame {
         folderChooser = new JFileChooser();
         folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         folderChooser.showOpenDialog(selectFolderButton.getParent());
-        selectedFolder.setText(folderChooser.getSelectedFile().getAbsolutePath());
+        try
+        {
+            selectedFolder.setText(folderChooser.getSelectedFile().getAbsolutePath());
+        }
+        catch (NullPointerException e) {
+            //error handling code
+        }
     }
 
     public void setFileList(JList fileList) {
