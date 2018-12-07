@@ -2,10 +2,20 @@ package client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.client.RestTemplate;
 import representation.File;
 
+import java.net.*;
+import java.util.List;
+import java.util.Map;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,10 +67,26 @@ public class FileClient {
      * Fonction de gestion du GET de l'URL /files/{fileId} côté client
      */
     public static void getFile(String peerUrl, String fileid) {
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(peerUrl+"/files" + "/" + fileid, String.class);
+        URL obj = null;
 
-        System.out.println(result);
+        try {
+            obj = new URL(peerUrl+"/files" + "/" + fileid);
+            URLConnection conn = obj.openConnection();
+            Map<String, List<String>> map = conn.getHeaderFields();
+
+            System.out.println("Printing Response Header...\n");
+
+            String filename = conn.getHeaderField("Content-Disposition").substring(22,conn.getHeaderField("Content-Disposition").length()-1);
+            filename = URLDecoder.decode(filename,"UTF-8");
+            System.out.println(filename);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
