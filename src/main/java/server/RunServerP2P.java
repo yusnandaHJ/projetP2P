@@ -14,6 +14,8 @@ import representation.Peer;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import static manager.FilesListManager.getSharedList;
@@ -34,6 +36,23 @@ public class RunServerP2P extends JFrame {
         fileList.add(new File("file 005",5000));
 
         mainFrameController.setFileList(fileList);
+
+        System.out.println(FilesListManager.getAvailableFiles().size());
+
+        HashMap<File,List<Peer>> files = FilesListManager.getAvailableFiles();
+
+        Iterator it = files.entrySet().iterator();
+        while(it.hasNext()){
+            HashMap.Entry pair = (HashMap.Entry)it.next();
+            //System.out.println(((File)pair.getKey()).getFileId() + " = "+pair.getValue());
+            System.out.println(pair.getKey() + " = "+pair.getValue());
+            it.remove();
+        }
+
+        /*for (File f: FileClient.getFiles()
+             ) {
+            System.out.println(f);
+        }*/
 
         /*FileClient.getFiles();
         FileClient.getFile("6fab43fcb5c8a53b1693bad716e20055023419c52fb584ca6c7c51e4f8cf04da");
