@@ -32,6 +32,7 @@ public class FileClient {
     /**
      * Fonction de gestion du GET de l'URL /files côté client
      */
+
     public static List<File> getFiles(String peerUrl) {
         RestTemplate restTemplate = new RestTemplate();
         List<File> files = new ArrayList<>();
@@ -60,12 +61,14 @@ public class FileClient {
 
         restTemplate.postForObject(peerUrl+"/files", files, File[].class);
 
+
         //System.out.println(result);
     }
 
     /**
      * Fonction de gestion du GET de l'URL /files/{fileId} côté client
      */
+
     public static void getFile(String peerUrl, String fileid) {
         URL obj = null;
 
@@ -98,6 +101,19 @@ public class FileClient {
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(peerUrl+"/files" +"/{fileId}",params);
+
+        //System.out.println(result);
+    }
+
+    /**
+     * Fonction de gestion du DELETE de l'URL /files/[fileId} côté client
+     */
+    public static void deleteFile(String fileid) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("fileId",fileid);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(uri+"/{fileId}",params);
 
         //System.out.println(result);
     }

@@ -1,5 +1,6 @@
 package manager;
 
+
 import client.FileClient;
 import client.PeerClient;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,6 +11,7 @@ import representation.Peer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import java.util.List;
 
 /**
@@ -118,4 +120,5 @@ public class FilesListManager {
 
         return files;
     }
+
 }

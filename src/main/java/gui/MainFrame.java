@@ -23,10 +23,15 @@ public class MainFrame extends JFrame {
     private JLabel selectedFolder;
     private JButton refreshFileListButton;
     private JLabel defaultPortParam;
-    private JButton saveParamsButton;
+
+    private JButton savePortParamButton;
     private JLabel peerParamLabel;
     private JTextField peerParamField;
     private JLabel peerParam;
+    private JList peerList;
+    private JButton deletePeerButton;
+    private JButton addPeerButton;
+
     private JFileChooser folderChooser;
 
     public MainFrame() {
@@ -107,8 +112,8 @@ public class MainFrame extends JFrame {
         return defaultPortParam;
     }
 
-    public JButton getSaveParamsButton() {
-        return saveParamsButton;
+    public JButton getSavePortParamButton() {
+        return savePortParamButton;
     }
 
     public JLabel getPeerParamLabel() {
@@ -126,4 +131,22 @@ public class MainFrame extends JFrame {
     public JFileChooser getFolderChooser() {
         return folderChooser;
     }
+
+
+    public JList getPeerList() {
+        return peerList;
+    }
+
+    public void setPeerList(JList peerList) {
+        this.peerList = peerList;
+    }
+
+    public JButton getDeletePeerButton() {
+        return deletePeerButton;
+    }
+
+    public JButton getAddPeerButton() {
+        return addPeerButton;
+    }
+
 }
