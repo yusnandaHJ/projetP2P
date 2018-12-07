@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
     public static final int HEIGHT = 500;
 
     private JTabbedPane menuTabbedPane;
-    private JPanel homePanel;
+    private JPanel downloadPanel;
     private JList fileList;
     private JLabel fileListLabel;
     private JPanel parametersPanel;
@@ -26,10 +26,16 @@ public class MainFrame extends JFrame {
     private JButton savePortParamButton;
     private JLabel peerParamLabel;
     private JTextField peerParamField;
-    private JLabel peerParam;
     private JList peerList;
     private JButton deletePeerButton;
     private JButton addPeerButton;
+    private JButton downloadFileButton;
+    private JButton deleteFileButton;
+    private JPanel sharePanel;
+    private JList localFilesList;
+    private JButton deleteLocalFileButton;
+    private JList recipientsList;
+    private JButton sendLocalFileButton;
     private JFileChooser folderChooser;
 
     public MainFrame() {
@@ -62,8 +68,8 @@ public class MainFrame extends JFrame {
         return menuTabbedPane;
     }
 
-    public JPanel getHomePanel() {
-        return homePanel;
+    public JPanel getDownloadPanel() {
+        return downloadPanel;
     }
 
     public JList getFileList() {
@@ -122,17 +128,11 @@ public class MainFrame extends JFrame {
         return peerParamField;
     }
 
-    public JLabel getPeerParam() {
-        return peerParam;
-    }
-
     public JFileChooser getFolderChooser() {
         return folderChooser;
     }
 
-    public JList getPeerList() {
-        return peerList;
-    }
+    public JList getPeerList() { return peerList; }
 
     public void setPeerList(JList peerList) {
         this.peerList = peerList;
@@ -142,8 +142,44 @@ public class MainFrame extends JFrame {
         return deletePeerButton;
     }
 
-    public JButton getAddPeerButton() {
-        return addPeerButton;
+    public JButton getAddPeerButton() { return addPeerButton; }
+
+    public JButton getDownloadFileButton() { return downloadFileButton; }
+
+    public JButton getDeleteFileButton() { return deleteFileButton; }
+
+    public JList getLocalFilesList() {
+        return localFilesList;
     }
+
+    public void setLocalFilesList(JList localFilesList) {
+        this.localFilesList = localFilesList;
+    }
+
+    public JButton getDeleteLocalFileButton() {
+        return deleteLocalFileButton;
+    }
+
+    public void setDeleteLocalFileButton(JButton deleteLocalFileButton) {
+        this.deleteLocalFileButton = deleteLocalFileButton;
+    }
+
+    public JList getRecipientsList() {
+        return recipientsList;
+    }
+
+    public void setRecipientsList(JList recipientsList) {
+        this.recipientsList = recipientsList;
+    }
+
+
+    public JButton getSendLocalFileButton() {
+        return sendLocalFileButton;
+    }
+
+    public void setSendLocalFileButton(JButton sendLocalFileButton) {
+        this.sendLocalFileButton = sendLocalFileButton;
+    }
+
 
 }
