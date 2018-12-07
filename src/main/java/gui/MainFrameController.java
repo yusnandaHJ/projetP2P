@@ -4,8 +4,10 @@ import representation.File;
 import representation.Peer;
 
 import javax.swing.*;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,7 +27,9 @@ public class MainFrameController {
     public MainFrameController() {
         initMainFrame();
         refreshFileList();
+
         refreshPeerList();
+
         refreshParametersLabels();
         runButtonListeners();
     }
@@ -34,9 +38,11 @@ public class MainFrameController {
         connectionPort = DEFAULT_PORT;
         selectedFolderPath = DEFAULT_FOLDER_PATH;
         peerList = new ArrayList<>(); // TODO: should read the file with the list of known peers
+
         peerList.add(new Peer("1","1234"));
         peerList.add(new Peer("2","12345"));
         peerList.add(new Peer("3","123456"));
+
         fileList = new ArrayList<>(); // TODO: should read the file list of the chosen folder
         mainframe = new MainFrame();
         mainframe.getDefaultPortParam().setText("Default : " + Integer.toString(DEFAULT_PORT)); // default port, can't change during execution
@@ -45,6 +51,7 @@ public class MainFrameController {
     public void refreshParametersLabels() {
         mainframe.getSelectedFolder().setText(selectedFolderPath);
         mainframe.getPortParamField().setText(Integer.toString(connectionPort));
+
     }
 
     public void refreshFileList() {
@@ -54,6 +61,7 @@ public class MainFrameController {
         for (File f : fileList) {
             model.addElement(f);
         }
+
     }
 
     public void refreshPeerList() {
@@ -66,6 +74,7 @@ public class MainFrameController {
         for (Peer p : peerList) {
             model.addElement(p);
         }
+
     }
 
     public void runButtonListeners() {
@@ -77,11 +86,13 @@ public class MainFrameController {
             }
         });
 
+
         /* Listener for folder button selection */
         mainframe.getSelectFolderButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainframe.openFileChooser();
+
                 if(mainframe.getSelectedFolder().getText() != null) {
                     selectedFolderPath = mainframe.getSelectedFolder().getText();
                 }
@@ -123,6 +134,7 @@ public class MainFrameController {
                 ((DefaultListModel) pl.getModel()).remove(pl.getSelectedIndex());
                 refreshPeerList();
                 displayParamsConsole();
+
             }
         });
 
@@ -140,6 +152,7 @@ public class MainFrameController {
 
                 refreshParametersLabels();
                 refreshPeerList();
+
                 displayParamsConsole();
             }
         });
@@ -156,9 +169,11 @@ public class MainFrameController {
         this.peerList = peerList;
     }
 
+
     public List<Peer> getPeerList() {
         return peerList;
     }
+
 
     public void setFileList(List<File> fileList) {
         this.fileList = fileList;

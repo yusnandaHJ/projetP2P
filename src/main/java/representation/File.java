@@ -36,6 +36,18 @@ public class File {
         this.fileId = DigestUtils.sha256Hex(this.name + this.size);
     }
 
+    @Override
+    public int hashCode()
+    {
+        return fileId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        return this.fileId.equals(((File)o).getFileId());
+    }
+
     public String getFileId() {
         return fileId;
     }
