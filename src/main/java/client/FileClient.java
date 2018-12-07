@@ -1,8 +1,11 @@
 package client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
 import representation.File;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,24 +22,33 @@ public class FileClient {
     /**
      * Fonction de gestion du GET de l'URL /files côté client
      */
-    public static void getFiles() {
+    public static List<File> getFiles(String peerUrl) {
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
+        List<File> files = new ArrayList<>();
+        String result = restTemplate.getForObject(peerUrl+"/files", String.class);
 
-        System.out.println(result);
+        //System.out.println(result);
+
+        try {
+            files = new ObjectMapper().readValue(result, new TypeReference<List<File>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return files;
     }
 
     /**
      * Fonction de gestion du POST de l'URL /files côté client
      */
-    public static void updateFiles() {
+    public static void updateFiles(String peerUrl) {
         List<File> files = new ArrayList<>();
         files.add(new File("lol", 12));
         files.add(new File("jpp", 1255555555));
 
         RestTemplate restTemplate = new RestTemplate();
 
-        restTemplate.postForObject(uri, files, File[].class);
+        restTemplate.postForObject(peerUrl+"/files", files, File[].class);
 
         //System.out.println(result);
     }
@@ -44,9 +56,9 @@ public class FileClient {
     /**
      * Fonction de gestion du GET de l'URL /files/{fileId} côté client
      */
-    public static void getFile(String fileid) {
+    public static void getFile(String peerUrl, String fileid) {
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri + "/" + fileid, String.class);
+        String result = restTemplate.getForObject(peerUrl+"/files" + "/" + fileid, String.class);
 
         System.out.println(result);
     }
@@ -54,12 +66,12 @@ public class FileClient {
     /**
      * Fonction de gestion du DELETE de l'URL /files/[fileId} côté client
      */
-    public static void deleteFile(String fileid) {
+    public static void deleteFile(String peerUrl, String fileid) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("fileId",fileid);
 
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete(uri+"/{fileId}",params);
+        restTemplate.delete(peerUrl+"/files" +"/{fileId}",params);
 
         //System.out.println(result);
     }
