@@ -53,7 +53,7 @@ public class RunServerP2P extends JFrame {
         FilesListManager.saveFiles(getSharedList());
 
         //for (File f: sharedFiles) {
-          //  System.out.println(f.getFileid()+" === "+f.getName()+" === "+f.getSize());
+          //  System.out.println(f.getFileId()+" === "+f.getName()+" === "+f.getSize());
         //}
     }
 }

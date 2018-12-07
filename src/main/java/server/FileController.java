@@ -40,7 +40,7 @@ public class FileController {
         String fileName = null;
 
         for (File file : FilesListManager.readFiles()) {
-            if (file.getFileid().equals(fileId)) {
+            if (file.getFileId().equals(fileId)) {
                 fileName = file.getName();
             }
         }
@@ -83,7 +83,7 @@ public class FileController {
 
         File fileToAdd = new File(fileName, file.getSize());
 
-        if (fileList.stream().noneMatch(o -> o.getFileid().equals(fileToAdd.getFileid()))) {
+        if (fileList.stream().noneMatch(o -> o.getFileId().equals(fileToAdd.getFileId()))) {
             fileList.add(fileToAdd);
             FilesListManager.saveFiles(fileList);
         }
@@ -96,7 +96,7 @@ public class FileController {
     @PostMapping("/files")
     public ResponseEntity<List<File>> uploadFiles(@RequestBody List<File> files) {
         //Example
-        //files.stream().forEach(f -> f.getFileid());
+        //files.stream().forEach(f -> f.getFileId());
         //System.out.println(files.get(0).getSize());
 
 
@@ -114,7 +114,7 @@ public class FileController {
         String fileName = null;
         for (Iterator<File> fileIterator = fileList.iterator(); fileIterator.hasNext(); ) {
             File file = fileIterator.next();
-            if (file.getFileid().equals(fileId)) {
+            if (file.getFileId().equals(fileId)) {
                 fileName = file.getName();
                 java.io.File fileToDelete = new java.io.File(this.storageDirectoryPath + fileName);
                 fileIterator.remove();

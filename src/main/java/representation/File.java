@@ -13,7 +13,7 @@ import java.nio.file.attribute.BasicFileAttributes;
  * Attention à ne pas confondre avec java.io.File
  */
 public class File {
-    private String fileid;
+    private String fileId;
     private String name;
     private long size;
 
@@ -26,22 +26,22 @@ public class File {
 
         this.name = file.getFileName().toString();
         this.size = attr.size();
-        this.fileid = DigestUtils.sha256Hex(this.name + this.size);
+        this.fileId = DigestUtils.sha256Hex(this.name + this.size);
 
     }
 
     public File(String name, long size) {
         this.name = name;
         this.size = size;
-        this.fileid = DigestUtils.sha256Hex(this.name + this.size);
+        this.fileId = DigestUtils.sha256Hex(this.name + this.size);
     }
 
-    public String getFileid() {
-        return fileid;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setFileid(String fileid) {
-        this.fileid = fileid;
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
     }
 
     public String getName() {
