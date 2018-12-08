@@ -129,7 +129,7 @@ public class FilesListManager {
             HashMap.Entry pair = (HashMap.Entry)it.next();
             //System.out.println(((File)pair.getKey()).getFileId() + " = "+pair.getValue());
             files.add((File)pair.getKey());
-            it.remove();
+            //it.remove();
         }
 
         return files;

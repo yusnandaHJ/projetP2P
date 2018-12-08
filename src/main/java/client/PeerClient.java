@@ -21,10 +21,10 @@ public class PeerClient {
     /**
      * Fonction de gestion du GET de l'URL /peers côté client
      */
-    public static List<Peer> getPeers() {
+    public static List<Peer> getPeers(String peerUrl) {
         RestTemplate restTemplate = new RestTemplate();
         List<Peer> peers = new ArrayList<>();
-        String result = restTemplate.getForObject(uri, String.class);
+        String result = restTemplate.getForObject(peerUrl + "/peers", String.class);
 
         try {
             peers = new ObjectMapper().readValue(result, new TypeReference<List<Peer>>(){});
@@ -40,12 +40,12 @@ public class PeerClient {
      * Fonction de gestion du POST de l'URL /peers côté client
      * Nous avons considéré que nous envoyons seulements les informations de notre serveur (notre URL et id)
      */
-    public static void registerPeers(String url) {
+    public static void registerPeers(String peerUrl,String url) {
         Peer self = new Peer(url);
 
         RestTemplate restTemplate = new RestTemplate();
 
-        restTemplate.postForObject(uri, self, Peer.class);
+        restTemplate.postForObject(peerUrl + "/peers", self, Peer.class);
 
         //System.out.println(result);
     }
@@ -53,8 +53,8 @@ public class PeerClient {
     /**
      * Fonction de gestion du DELETE de l'URL /peers/url côté client
      */
-    public static void unregisterPeer(String url) {
-        String desturi = uri+"/{url}";
+    public static void unregisterPeer(String peerUrl, String url) {
+        String desturi = peerUrl + "/peers"+"/{url}";
         Map<String, String> params = new HashMap<String, String>();
         params.put("url",url);
 

@@ -1,5 +1,7 @@
 package gui;
 
+import client.FileClient;
+import client.PeerClient;
 import manager.FilesListManager;
 import manager.PeersListManager;
 import representation.File;
@@ -13,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -150,6 +153,11 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 fileToDownload = null;
                 fileToDelete = (File) mainframe.getFileList().getSelectedValue();
+
+                List<Peer> peers = fileMap.get(fileToDelete);
+                for (Peer p: peers){
+                    FileClient.deleteFile(p.getUrl(),fileToDelete.getFileId());
+                }
                 displayFileActionConsole();
             }
         });
@@ -195,6 +203,10 @@ public class MainFrameController {
                 localFileToDelete = null;
                 localFileToSend = (File) mainframe.getLocalFilesList().getSelectedValue();
                 fileRecipients = (List<Peer>) mainframe.getRecipientsList().getSelectedValuesList();
+                for (Peer p: fileRecipients
+                     ) {
+                    System.out.println("send file "+localFileList.toString()+ " to "+p.getUrl()); //à remplacer par un vrai upload client
+                }
                 displayLocalFileActionConsole();
             }
         });
@@ -231,7 +243,7 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 String peerUrl = mainframe.getPeerParamField().getText();
                 if(!mainframe.getPeerParamField().getText().isEmpty()) {
-                    peerList.add(new Peer("1"));
+                    peerList.add(new Peer(peerUrl));
                     mainframe.getPeerParamField().setText("");
                 }
                 PeersListManager.savePeers(peerList);
