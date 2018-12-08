@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -116,6 +117,20 @@ public class FilesListManager {
                     files.put(f,destPeers);
                 }
             }
+        }
+
+        return files;
+    }
+
+    public static List<File> getFileListFromMap(HashMap<File,List<Peer>> filesMap){
+        List<File> files = new ArrayList<>();
+
+        Iterator it = filesMap.entrySet().iterator();
+        while(it.hasNext()){
+            HashMap.Entry pair = (HashMap.Entry)it.next();
+            //System.out.println(((File)pair.getKey()).getFileId() + " = "+pair.getValue());
+            files.add((File)pair.getKey());
+            it.remove();
         }
 
         return files;

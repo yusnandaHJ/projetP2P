@@ -1,5 +1,6 @@
 package gui;
 
+import manager.FilesListManager;
 import representation.File;
 import representation.Peer;
 
@@ -9,6 +10,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -20,6 +22,7 @@ public class MainFrameController {
     private String selectedFolderPath = DEFAULT_FOLDER_PATH;
     private List<File> fileList;
     private List<File> localFileList;
+    private HashMap<File,List<Peer>> fileMap;
     private List<Peer> peerList;
     private File fileToDownload;
     private File fileToDelete;
@@ -61,6 +64,9 @@ public class MainFrameController {
 
         DefaultListModel<File> model = new DefaultListModel<>();
         mainframe.getFileList().setModel(model);
+
+        fileMap = FilesListManager.getAvailableFiles();
+        fileList = FilesListManager.getFileListFromMap(fileMap);
 
         if(fileList != null) {
             for (File f : fileList) {
@@ -310,4 +316,11 @@ public class MainFrameController {
 
     public void setFileRecipients(List<Peer> fileRecipients) { this.fileRecipients = fileRecipients; }
 
+    public HashMap<File, List<Peer>> getFileMap() {
+        return fileMap;
+    }
+
+    public void setFileMap(HashMap<File, List<Peer>> fileMap) {
+        this.fileMap = fileMap;
+    }
 }

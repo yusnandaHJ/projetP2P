@@ -2,6 +2,7 @@ package client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import manager.FilesListManager;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.client.RestTemplate;
 import representation.File;
@@ -54,8 +55,11 @@ public class FileClient {
      */
     public static void updateFiles(String peerUrl) {
         List<File> files = new ArrayList<>();
-        files.add(new File("lol", 12));
-        files.add(new File("jpp", 1255555555));
+        try {
+            files = FilesListManager.getSharedList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         RestTemplate restTemplate = new RestTemplate();
 
