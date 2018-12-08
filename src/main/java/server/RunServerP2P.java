@@ -25,6 +25,8 @@ import static manager.FilesListManager.getSharedList;
 public class RunServerP2P extends JFrame {
     public static void main(String[] args) throws IOException {
         SpringApplication.run(RunServerP2P.class, args);
+
+
         MainFrameController mainFrameController = new MainFrameController(); // GUI
 
         /* Files test list from other peers */
@@ -41,18 +43,27 @@ public class RunServerP2P extends JFrame {
 
         HashMap<File,List<Peer>> files = FilesListManager.getAvailableFiles();
 
-        Iterator it = files.entrySet().iterator();
+        /*Iterator it = files.entrySet().iterator();
         while(it.hasNext()){
             HashMap.Entry pair = (HashMap.Entry)it.next();
             //System.out.println(((File)pair.getKey()).getFileId() + " = "+pair.getValue());
             System.out.println(pair.getKey() + " = "+pair.getValue());
             it.remove();
-        }
+        }*/
+
+        //FileClient.downloadUpdate("http://localhost:8080","a5da68f5680da4ea4fa974e49f5c50c54a22a19de0f88da5096e3a9d714bd389");
+
+        /*List<File> list = FilesListManager.getFileListFromMap(files);
+        for (File f: list
+             ) {
+            System.out.println(f);
+        }*/
 
         /*for (File f: FileClient.getFiles()
              ) {
             System.out.println(f);
         }*/
+
 
         /*FileClient.getFiles();
         FileClient.getFile("6fab43fcb5c8a53b1693bad716e20055023419c52fb584ca6c7c51e4f8cf04da");
@@ -61,12 +72,7 @@ public class RunServerP2P extends JFrame {
         List<Peer> peers = new ArrayList();
         peers.add(new Peer("001","xxaax"));
         peers.add(new Peer("002","zzzuuz"));
-        PeersListManager.savePeers(peers);
-
-        peers = PeersListManager.readPeers();
-        for (Peer p: peers) {
-            System.out.println(p.getUrl());
-        }*/
+        PeersListManager.savePeers(peers);*/
 
         List<File> sharedFiles = getSharedList();
         FilesListManager.saveFiles(getSharedList());

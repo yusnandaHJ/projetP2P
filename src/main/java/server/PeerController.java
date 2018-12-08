@@ -27,8 +27,8 @@ public class PeerController {
     @PostMapping("/peers")
     public Peer registerPeer() {
         List<Peer> peersList = PeersListManager.readPeers();
-        Peer registeringPeer = new Peer("testpeerid", "testURL");
-        if(peersList.stream().noneMatch(o -> o.getPeerId().equals(registeringPeer.getPeerId()))) {
+        Peer registeringPeer = new Peer("testpeerid");
+        if(peersList.stream().noneMatch(o -> o.getUrl().equals(registeringPeer.getUrl()))) {
             peersList.add(registeringPeer);
         }
         PeersListManager.savePeers(peersList);
@@ -38,12 +38,12 @@ public class PeerController {
     /**
      * Rest DELETE Handler pour se déconnecter d'un pair
      */
-    @DeleteMapping("/peers/{peerId}")
-    public void unregisterPeer(@PathVariable String peerId) {
+    @DeleteMapping("/peers/{url}")
+    public void unregisterPeer(@PathVariable String url) {
         List<Peer> peersList = PeersListManager.readPeers();
         for(Iterator<Peer> peerIterator = peersList.iterator(); peerIterator.hasNext();){
             Peer peer = peerIterator.next();
-            if(peer.getPeerId().equals(peerId)){
+            if(peer.getUrl().equals(url)){
                 peerIterator.remove();
             }
         }

@@ -231,7 +231,7 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 String peerUrl = mainframe.getPeerParamField().getText();
                 if(!mainframe.getPeerParamField().getText().isEmpty()) {
-                    peerList.add(new Peer("1",peerUrl));
+                    peerList.add(new Peer("1"));
                     mainframe.getPeerParamField().setText("");
                 }
                 PeersListManager.savePeers(peerList);

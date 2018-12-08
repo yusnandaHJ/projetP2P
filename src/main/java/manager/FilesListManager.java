@@ -2,7 +2,6 @@ package manager;
 
 
 import client.FileClient;
-import client.PeerClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import representation.File;

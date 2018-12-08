@@ -3,7 +3,6 @@ package client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
-import representation.File;
 import representation.Peer;
 
 import java.io.IOException;
@@ -41,8 +40,8 @@ public class PeerClient {
      * Fonction de gestion du POST de l'URL /peers côté client
      * Nous avons considéré que nous envoyons seulements les informations de notre serveur (notre URL et id)
      */
-    public static void registerPeers(String id, String url) {
-        Peer self = new Peer(id, url);
+    public static void registerPeers(String url) {
+        Peer self = new Peer(url);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -54,10 +53,10 @@ public class PeerClient {
     /**
      * Fonction de gestion du DELETE de l'URL /peers/url côté client
      */
-    public static void unregisterPeer(String peerid) {
-        String desturi = uri+"/{peerid}";
+    public static void unregisterPeer(String url) {
+        String desturi = uri+"/{url}";
         Map<String, String> params = new HashMap<String, String>();
-        params.put("peerid",peerid);
+        params.put("url",url);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(desturi,params);
