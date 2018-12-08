@@ -1,6 +1,7 @@
 package representation;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import property.FileStorageProperties;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -16,12 +17,13 @@ public class File {
     private String fileId;
     private String name;
     private long size;
+    private String storageDirectoryPath = FileStorageProperties.getUploadDir();
 
     public File() {
     }
 
     public File(String name) throws IOException {
-        Path file = FileSystems.getDefault().getPath("./shared", name);
+        Path file = FileSystems.getDefault().getPath(storageDirectoryPath, name);
         BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
         this.name = file.getFileName().toString();

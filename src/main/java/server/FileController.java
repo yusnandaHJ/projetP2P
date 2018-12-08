@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import property.FileStorageProperties;
 import representation.File;
 import service.FileStorageService;
 
@@ -26,7 +27,7 @@ import java.util.List;
 public class FileController {
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-    private String storageDirectoryPath = "./shared/";
+    private String storageDirectoryPath = FileStorageProperties.getUploadDir();
 
     @Autowired
     private FileStorageService fileStorageService;

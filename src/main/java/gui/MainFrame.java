@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Paul on 03/12/2018.
@@ -40,7 +41,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
         setTitle(APP_TITLE);
-        setSize(WIDTH,HEIGHT);
+        setSize(WIDTH, HEIGHT);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(mainPanel);
@@ -51,11 +52,9 @@ public class MainFrame extends JFrame {
         folderChooser = new JFileChooser();
         folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         folderChooser.showOpenDialog(selectFolderButton.getParent());
-        try
-        {
+        try {
             selectedFolder.setText(folderChooser.getSelectedFile().getAbsolutePath());
-        }
-        catch (NullPointerException e) {
+        } catch (NullPointerException e) {
             //error handling code
         }
     }

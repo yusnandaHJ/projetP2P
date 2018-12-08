@@ -7,13 +7,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "file")
 public class FileStorageProperties {
-    private String uploadDir;
+    private static String uploadDir;
 
-    public String getUploadDir() {
+    public static String getUploadDir() {
         return uploadDir;
     }
 
     public void setUploadDir(String uploadDir) {
         this.uploadDir = uploadDir;
+    }
+
+    public static void updateUploadDir(String newUploadDir){
+        uploadDir = newUploadDir;
     }
 }
