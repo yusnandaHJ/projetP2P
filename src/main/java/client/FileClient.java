@@ -105,6 +105,28 @@ public class FileClient {
         //System.out.println(result);
     }
 
+    public static void downloadUpdate(String peerUrl, String fileid) {
+        String BASE_URL=peerUrl+"/files" + "/" + fileid;
+
+        //Client client = ClientBuilder.newClient();
+        try {
+            URL website = new URL(BASE_URL);
+
+            URLConnection conn = website.openConnection();
+            Map<String, List<String>> map = conn.getHeaderFields();
+            String filename = conn.getHeaderField("Content-Disposition").substring(22,conn.getHeaderField("Content-Disposition").length()-1);
+            filename = URLDecoder.decode(filename,"UTF-8");
+
+            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+            FileOutputStream fos = new FileOutputStream("./shared/clone_"+filename);
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+
+        } catch ( Exception ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
     /**
      * Fonction de gestion du DELETE de l'URL /files/[fileId} côté client
      */

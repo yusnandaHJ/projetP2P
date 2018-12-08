@@ -1,9 +1,15 @@
 package client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
+import representation.File;
 import representation.Peer;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,11 +22,19 @@ public class PeerClient {
     /**
      * Fonction de gestion du GET de l'URL /peers côté client
      */
-    public static void getPeers() {
+    public static List<Peer> getPeers() {
         RestTemplate restTemplate = new RestTemplate();
+        List<Peer> peers = new ArrayList<>();
         String result = restTemplate.getForObject(uri, String.class);
 
-        System.out.println(result);
+        try {
+            peers = new ObjectMapper().readValue(result, new TypeReference<List<Peer>>(){});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //System.out.println(result);
+        return peers;
     }
 
     /**
