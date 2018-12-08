@@ -1,6 +1,7 @@
 package gui;
 
 import manager.FilesListManager;
+import manager.PeersListManager;
 import representation.File;
 import representation.Peer;
 
@@ -9,6 +10,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,10 +45,8 @@ public class MainFrameController {
     private void initMainFrame() {
         connectionPort = DEFAULT_PORT;
         selectedFolderPath = DEFAULT_FOLDER_PATH;
-        peerList = new ArrayList<>();
-        peerList.add(new Peer("1","1234"));
-        peerList.add(new Peer("2","12345"));
-        peerList.add(new Peer("3","123456"));
+        //peerList = new ArrayList<>();
+        peerList = PeersListManager.readPeers();
         fileList = new ArrayList<>();
         fileToDownload = null;
         mainframe = new MainFrame();
@@ -82,6 +82,12 @@ public class MainFrameController {
 
         DefaultListModel<File> model = new DefaultListModel<>();
         mainframe.getLocalFilesList().setModel(model);
+
+        try {
+            localFileList = FilesListManager.getSharedList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if(localFileList != null) {
             for (File f : localFileList) {
