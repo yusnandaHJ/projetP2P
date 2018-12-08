@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import property.FileStorageProperties;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -54,12 +55,8 @@ public class FileStorageService {
     /**
      * Charge le fichier en tant qu'objet Resource
      */
-    public Resource loadFileAsResource(String fileName) {
-        try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-            return new UrlResource(filePath.toUri());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Le fichier \"" + fileName+"\" n'existe pas", e);
-        }
+    public File loadFile(String fileName) {
+        Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+        return new File(filePath.toString());
     }
 }

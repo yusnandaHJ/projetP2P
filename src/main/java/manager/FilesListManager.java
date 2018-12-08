@@ -4,6 +4,7 @@ package manager;
 import client.FileClient;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import property.FileStorageProperties;
 import representation.File;
 import representation.Peer;
 
@@ -20,6 +21,7 @@ import java.util.List;
 public class FilesListManager {
 
     private static final java.io.File filePersistenceFile = new java.io.File("./src/main/resources/listeFichiers.json");
+    private static final String storageDirectoryPath = FileStorageProperties.getUploadDir();
 
     /**
      * Enregistre la liste de fichier dans le fichier listeFichiers.json
@@ -53,7 +55,7 @@ public class FilesListManager {
      */
     public static List<File> getSharedList() throws IOException {
         List<File> files = new ArrayList<>();
-        java.io.File dir = new java.io.File("./shared");
+        java.io.File dir = new java.io.File(storageDirectoryPath);
         java.io.File[] directoryListing = dir.listFiles();
         if (directoryListing != null) {
             for (java.io.File child : directoryListing) {

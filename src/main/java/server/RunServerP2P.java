@@ -12,7 +12,11 @@ import representation.File;
 import representation.Peer;
 
 import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,20 +28,26 @@ import static manager.FilesListManager.getSharedList;
 @EnableConfigurationProperties({FileStorageProperties.class})
 public class RunServerP2P extends JFrame {
     public static void main(String[] args) throws IOException {
+
+        /*InetAddress IP=InetAddress.getLocalHost();
+        System.out.println("IP of my system is := "+IP.getHostAddress());
+
+        try(FileWriter fw = new FileWriter("./src/main/resources/application.properties", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw)) {
+            out.println("\nserver.port=8082");
+            out.println("server.address="+IP.getHostAddress());
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }*/
+
         SpringApplication.run(RunServerP2P.class, args);
 
 
         MainFrameController mainFrameController = new MainFrameController(); // GUI
-
+        
         /* Files test list from other peers */
-        List<File> fileList = new ArrayList<>();
-        fileList.add(new File("file 001",1000));
-        fileList.add(new File("file 002",2000));
-        fileList.add(new File("file 003",3000));
-        fileList.add(new File("file 004",4000));
-        fileList.add(new File("file 005",5000));
-
-        mainFrameController.setFileList(fileList);
+        mainFrameController.setFileList(getSharedList());
 
         System.out.println(FilesListManager.getAvailableFiles().size());
 
