@@ -234,6 +234,7 @@ public class MainFrameController {
                     peerList.add(new Peer("1",peerUrl));
                     mainframe.getPeerParamField().setText("");
                 }
+                PeersListManager.savePeers(peerList);
                 refreshPeerList();
                 displayParamsConsole();
             }
@@ -246,6 +247,7 @@ public class MainFrameController {
                 JList pl = mainframe.getPeerList();
                 peerList.remove(pl.getSelectedValue());
                 ((DefaultListModel) pl.getModel()).remove(pl.getSelectedIndex());
+                PeersListManager.savePeers(peerList);
                 refreshPeerList();
                 displayParamsConsole();
             }
