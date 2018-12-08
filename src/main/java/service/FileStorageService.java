@@ -1,20 +1,20 @@
 package service;
 
+import manager.FilesListManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import property.FileStorageProperties;
+import representation.FileContent;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 /**
  * Classe service utile pour le stockage de fichier
@@ -58,5 +58,35 @@ public class FileStorageService {
     public File loadFile(String fileName) {
         Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
         return new File(filePath.toString());
+    }
+
+    public static FileContent getFileContentByFileMetadata(representation.File fileMetadata) throws IOException {
+        FileContent fileContent = null;
+        java.io.File dir = new java.io.File(FileStorageProperties.getUploadDir());
+        java.io.File[] directoryListing = dir.listFiles();
+        if (directoryListing != null) {
+            for (java.io.File child : directoryListing) {
+                if (child.getName().equals(fileMetadata.getName())) {
+                    representation.File childMetadata = new representation.File(child.getName(), child.length());
+                    if (childMetadata.getFileId().equals(fileMetadata.getFileId())) {
+                        fileContent = new FileContent(child);
+                    }
+                }
+            }
+        }
+        return fileContent;
+    }
+
+    public static representation.File getFileMetadataByFileId(String fileId) throws IOException {
+        representation.File fileMetadata = null;
+
+        List<representation.File> fileMetadataList = FilesListManager.readFiles();
+
+        for(representation.File file : fileMetadataList){
+            if(file.getFileId().equals(fileId)){
+                fileMetadata = file ;
+            }
+        }
+        return fileMetadata;
     }
 }

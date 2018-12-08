@@ -86,11 +86,7 @@ public class MainFrameController {
         DefaultListModel<File> model = new DefaultListModel<>();
         mainframe.getLocalFilesList().setModel(model);
 
-        try {
-            localFileList = FilesListManager.getSharedList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        localFileList = FilesListManager.readFiles();
 
         if(localFileList != null) {
             for (File f : localFileList) {

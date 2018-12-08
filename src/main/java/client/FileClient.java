@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import manager.FilesListManager;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.client.RestTemplate;
+import property.FileStorageProperties;
 import representation.File;
+import representation.FileContent;
+import service.FileStorageService;
 
 import java.net.*;
 import java.util.List;
@@ -53,20 +56,28 @@ public class FileClient {
     /**
      * Fonction de gestion du POST de l'URL /files côté client
      */
-    public static void updateFiles(String peerUrl) {
-        List<File> files = new ArrayList<>();
-        try {
-            files = FilesListManager.getSharedList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void uploadFile(String peerUrl, String fileId)throws IOException {
+
+        File fileToUploadMetadata = FileStorageService.getFileMetadataByFileId(fileId);
 
         RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(peerUrl+"/files", fileToUploadMetadata, File.class);
 
-        restTemplate.postForObject(peerUrl+"/files", files, File[].class);
+        uploadFileContent(peerUrl+"/files",fileToUploadMetadata);
 
+        //System.out.println(fileToUploadMetadata.toString);
+    }
 
-        //System.out.println(result);
+    /**
+     * Fonction de gestion du POST de l'URL /files/fileId côté client
+     */
+    public static void uploadFileContent(String peerUrl, File fileMetadata) throws IOException {
+        FileContent fileContent = FileStorageService.getFileContentByFileMetadata(fileMetadata);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(peerUrl+"/"+fileMetadata.getFileId(), fileContent, FileContent.class);
+
+        //System.out.println(fileContent.getContent());
     }
 
     /**
@@ -108,41 +119,5 @@ public class FileClient {
 
         //System.out.println(result);
     }
-
-    public static void downloadUpdate(String peerUrl, String fileid) {
-        String BASE_URL=peerUrl+"/files" + "/" + fileid;
-
-        //Client client = ClientBuilder.newClient();
-        try {
-            URL website = new URL(BASE_URL);
-
-            URLConnection conn = website.openConnection();
-            Map<String, List<String>> map = conn.getHeaderFields();
-            String filename = conn.getHeaderField("Content-Disposition").substring(22,conn.getHeaderField("Content-Disposition").length()-1);
-            filename = URLDecoder.decode(filename,"UTF-8");
-
-            ReadableByteChannel rbc = Channels.newChannel(website.openStream());
-            FileOutputStream fos = new FileOutputStream("./shared/clone_"+filename);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-
-        } catch ( Exception ex) {
-            ex.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Fonction de gestion du DELETE de l'URL /files/[fileId} côté client
-     */
-    public static void deleteFile(String fileid) {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("fileId",fileid);
-
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete(uri+"/{fileId}",params);
-
-        //System.out.println(result);
-    }
-
 
 }
