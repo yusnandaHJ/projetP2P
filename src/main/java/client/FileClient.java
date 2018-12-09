@@ -149,7 +149,6 @@ public class FileClient {
             restTemplate.delete(peerUrl+"/files" +"/{fileId}",params);
         }
         catch (RestClientException e){
-            System.out.println("Erreur dans la suppression du fichier");
             return false;
         }
 
