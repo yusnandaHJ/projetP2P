@@ -6,6 +6,7 @@ import property.FileStorageProperties;
 import representation.Peer;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,18 @@ public class PeersListManager {
             e.printStackTrace();
         }
         return peers;
+    }
+
+    public static boolean isUrlValid(String peerUrl){
+        try
+        {
+            URL url = new URL(peerUrl);
+            url.toURI();
+            return true;
+        } catch (Exception exception)
+        {
+            return false;
+        }
     }
 
 }

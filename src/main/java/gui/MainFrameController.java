@@ -122,6 +122,7 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 refreshFileList();
                 refreshLocalFileList();
+                refreshPeerList();
             }
         });
 
@@ -265,12 +266,15 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 String peerUrl = mainframe.getPeerParamField().getText();
                 if(!mainframe.getPeerParamField().getText().isEmpty()) {
-                    peerList.add(new Peer(peerUrl));
+                    if(PeersListManager.isUrlValid(peerUrl)){
+                        peerList.add(new Peer(peerUrl));
+                        PeersListManager.savePeers(peerList);
+                        refreshPeerList();
+                        displayParamsConsole();
+                    }
+
                     mainframe.getPeerParamField().setText("");
                 }
-                PeersListManager.savePeers(peerList);
-                refreshPeerList();
-                displayParamsConsole();
             }
         });
 
