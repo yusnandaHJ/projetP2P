@@ -127,6 +127,7 @@ public class MainFrameController {
                 refreshFileList();
                 refreshLocalFileList();
                 refreshPeerList();
+                setInfoMessage("INFO: Liste des fichiers disponibles à jour");
             }
         });
 
@@ -148,8 +149,10 @@ public class MainFrameController {
                 fileToDelete = null;
                 fileToDownload = (File) mainframe.getFileList().getSelectedValue();
 
-                //Maybe loop to ping
-                FileClient.getFile(fileMap.get(fileToDownload).get(0).getUrl(),fileToDownload.getFileId());
+                if(FileClient.getFile(fileMap.get(fileToDownload).get(0).getUrl(),fileToDownload.getFileId()))
+                    setInfoMessage("INFO: Fichier téléchargé");
+                else
+                    setInfoMessage("ERREUR: Un problème est survenu lors du téléchargement du fichier");
 
                 refreshLocalFileList();
                 refreshFileList();
@@ -166,9 +169,10 @@ public class MainFrameController {
 
                 List<Peer> peers = fileMap.get(fileToDelete);
                 for (Peer p: peers){
-                    //SSystem.out.println(fileToDelete);
                     FileClient.deleteFile(p.getUrl(),fileToDelete.getFileId());
                 }
+
+                setInfoMessage("INFO: Le fichier a été supprimé sur les pairs disponibles");
 
                 refreshFileList();
                 refreshLocalFileList();
@@ -199,6 +203,8 @@ public class MainFrameController {
                 localFileToDelete = (File) mainframe.getLocalFilesList().getSelectedValue();
                 FilesListManager.deleteLocalFile(localFileToDelete.getFileId());
 
+                setInfoMessage("INFO: Le fichier a été supprimé du dossier de partage");
+
                 refreshFileList();
                 refreshLocalFileList();
 
@@ -226,8 +232,14 @@ public class MainFrameController {
                 for (Peer p: fileRecipients
                      ) {
                     try {
-                        FileClient.uploadFile(p.getUrl(),localFileToSend.getFileId());
-                        FileClient.uploadFileContent(p.getUrl(),localFileToSend);
+                        if(!FileClient.uploadFile(p.getUrl(),localFileToSend.getFileId()))
+                            setInfoMessage("ERREUR: Un problème est survenu lors de l'ajout du fichier sur le pair");
+                        else
+                            setInfoMessage("INFO: Le fichier a bien été envoyé");
+                        /*if(FileClient.uploadFileContent(p.getUrl(),localFileToSend))
+                            setInfoMessage("INFO: Le fichier a bien été envoyé");
+                        else
+                            setInfoMessage("INFO: Liste des fichiers disponibles à jour");*/
                         System.out.println("send file "+localFileList.toString()+ " to "+p.getUrl());
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -248,6 +260,7 @@ public class MainFrameController {
                 mainframe.openFileChooser();
                 if(mainframe.getSelectedFolder().getText() != null) {
                     selectedFolderPath = mainframe.getSelectedFolder().getText();
+                    setInfoMessage("INFO: Le répertoire partagé a été modifié");
                 }
                 refreshParametersLabels();
                 displayParamsConsole();
@@ -273,9 +286,12 @@ public class MainFrameController {
                     if(PeersListManager.isUrlValid(peerUrl)){
                         peerList.add(new Peer(peerUrl));
                         PeersListManager.savePeers(peerList);
+                        setInfoMessage("INFO: Le pair a bien été ajouté");
                         refreshPeerList();
                         displayParamsConsole();
                     }
+                    else
+                        setInfoMessage("ERREUR: Vous devez entrer une URL conforme (http://xx.xx.xx.xx:port)");
 
                     mainframe.getPeerParamField().setText("");
                 }
@@ -290,6 +306,7 @@ public class MainFrameController {
                 peerList.remove(pl.getSelectedValue());
                 ((DefaultListModel) pl.getModel()).remove(pl.getSelectedIndex());
                 PeersListManager.savePeers(peerList);
+                setInfoMessage("INFO: Pair supprimé");
                 refreshPeerList();
                 displayParamsConsole();
             }
