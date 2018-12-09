@@ -4,6 +4,7 @@ import client.FileClient;
 import client.PeerClient;
 import manager.FilesListManager;
 import manager.PeersListManager;
+import property.FileStorageProperties;
 import representation.File;
 import representation.Peer;
 import server.FileController;
@@ -21,8 +22,8 @@ import java.util.List;
 
 
 public class MainFrameController {
-    public static final int DEFAULT_PORT = 0;
-    public static final String DEFAULT_FOLDER_PATH = "/shared_folder";
+    public static final int DEFAULT_PORT = 8080;
+    public static final String DEFAULT_FOLDER_PATH = FileStorageProperties.getUploadDir();
 
     private int connectionPort;
     private String selectedFolderPath = DEFAULT_FOLDER_PATH;
