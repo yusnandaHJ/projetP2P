@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class FilesListManager {
 
-    private static final java.io.File filePersistenceFile = new java.io.File("./src/main/resources/listeFichiers.json");
+    private static final java.io.File filePersistenceFile = new java.io.File(FileStorageProperties.getFilePersistenceJson());
 
 
     /**

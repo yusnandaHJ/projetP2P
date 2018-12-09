@@ -2,6 +2,7 @@ package manager;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import property.FileStorageProperties;
 import representation.Peer;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class PeersListManager {
 
-    private static final java.io.File peerPersistenceFile = new java.io.File("./src/main/resources/listePairs.json");
+    private static final java.io.File peerPersistenceFile = new java.io.File(FileStorageProperties.getPeerPersistenceJson());
 
     /**
      * Enregistre la liste de fichier dans le fichier listePairs.json
