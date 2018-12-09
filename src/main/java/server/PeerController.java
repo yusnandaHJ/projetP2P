@@ -2,6 +2,7 @@ package server;
 
 import manager.PeersListManager;
 import org.springframework.web.bind.annotation.*;
+import property.PeerServerProperties;
 import representation.Peer;
 
 import java.util.Iterator;
@@ -25,14 +26,13 @@ public class PeerController {
      * Rest POST Handler pour envoyer une liste de pairs découverts
      */
     @PostMapping("/peers")
-    public Peer registerPeer() {
+    public void registerPeer(@RequestBody Peer peer) {
         List<Peer> peersList = PeersListManager.readPeers();
-        Peer registeringPeer = new Peer("testpeerid");
+        Peer registeringPeer = new Peer(peer.getUrl());
         if(peersList.stream().noneMatch(o -> o.getUrl().equals(registeringPeer.getUrl()))) {
             peersList.add(registeringPeer);
         }
         PeersListManager.savePeers(peersList);
-        return registeringPeer;
     }
 
     /**

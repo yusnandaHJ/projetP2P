@@ -3,6 +3,7 @@ package client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.client.RestTemplate;
+import property.PeerServerProperties;
 import representation.Peer;
 
 import java.io.IOException;
@@ -36,10 +37,9 @@ public class PeerClient {
 
     /**
      * Fonction de gestion du POST de l'URL /peers côté client
-     * Nous avons considéré que nous envoyons seulements les informations de notre serveur (notre URL et id)
      */
-    public static void registerPeers(String peerUrl,String url) {
-        Peer self = new Peer(url);
+    public static void registerPeers(String peerUrl) {
+        Peer self = new Peer("http://"+PeerServerProperties.getAddress()+":"+PeerServerProperties.getPort());
 
         RestTemplate restTemplate = new RestTemplate();
 
