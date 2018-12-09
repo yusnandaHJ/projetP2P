@@ -8,6 +8,9 @@ import java.io.IOException;
 public class FileContent {
     private String content;
 
+    public FileContent(){
+    }
+
     public FileContent(java.io.File file) throws IOException{
         byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
         this.content = new String (encoded);
