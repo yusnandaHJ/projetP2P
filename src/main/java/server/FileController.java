@@ -57,7 +57,9 @@ public class FileController {
      * Rest POST Handler pour envoyer un unique fichier
      */
     @PostMapping("/files/{fileId}")
-    public void uploadFile(@RequestBody FileContent fileContent) {
+    public void uploadFile(@PathVariable String fileId, @RequestBody FileContent fileContent) throws IOException {
+        File fileMetadata = FileStorageService.getFileMetadataByFileId(fileId);
+        fileStorageService.storeFile(fileContent,fileMetadata);
     }
 
     /**
@@ -65,6 +67,9 @@ public class FileController {
      */
     @PostMapping("/files")
     public void uploadFileMetadata(@RequestBody File file) {
+        List<File> fileList = FilesListManager.readFiles();
+        fileList.add(file);
+        FilesListManager.saveFiles(fileList);
     }
 
     /**

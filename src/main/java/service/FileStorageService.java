@@ -1,10 +1,9 @@
 package service;
 
 import manager.FilesListManager;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import property.FileStorageProperties;
 import representation.FileContent;
 
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 /**
@@ -41,15 +39,9 @@ public class FileStorageService {
     /**
      * Stocker un fichier
      */
-    public String storeFile(MultipartFile file) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        try {
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            return fileName;
-        } catch (IOException e) {
-            throw new RuntimeException("Impossible de charger le fichier \"" + fileName + "\"", e);
-        }
+    public void storeFile(FileContent fileContent, representation.File fileMetadata) throws IOException {
+        String filePath = FileStorageProperties.getUploadDir()+"/"+fileMetadata.getName();
+        FileUtils.writeByteArrayToFile(new File(filePath),fileContent.decode());
     }
 
     /**

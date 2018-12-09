@@ -13,7 +13,7 @@ public class FileContent {
 
     public FileContent(java.io.File file) throws IOException{
         byte[] encoded = Base64.encodeBase64(FileUtils.readFileToByteArray(file));
-        this.content = new String (encoded);
+        this.content = new String(encoded);
     }
 
     public String getContent() {
@@ -22,5 +22,9 @@ public class FileContent {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public byte[] decode(){
+        return Base64.decodeBase64(this.content);
     }
 }
