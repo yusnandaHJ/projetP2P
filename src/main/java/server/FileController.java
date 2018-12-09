@@ -28,16 +28,16 @@ public class FileController {
      */
     @GetMapping("/files/{fileId}")
     public FileContent getFile(@PathVariable String fileId) throws IOException {
-        // Récupére les fichiers en tant que Resource
+        // Récupére les fichiers en tant que Ressource
         String fileName = null;
 
-        for (File file : FilesListManager.readFiles()) {
+        for (File file : FilesListManager.readFiles()) {//on cherche dans les fichiers locaux
             if (file.getFileId().equals(fileId)) {
                 fileName = file.getName();
             }
         }
         try{
-            return new FileContent(fileStorageService.loadFile(fileName)) ;
+            return new FileContent(fileStorageService.loadFile(fileName)) ; //on renvoie le contenu du fichier
         }catch(IOException e){
             throw new IOException("Le fichier n'a pas pu être chargé");
         }
@@ -56,7 +56,7 @@ public class FileController {
      */
     @PostMapping("/files/{fileId}")
     public void uploadFile(@PathVariable String fileId, @RequestBody FileContent fileContent) throws IOException {
-        File fileMetadata = FileStorageService.getFileMetadataByFileId(fileId);
+        File fileMetadata = FileStorageService.getFileMetadataByFileId(fileId); //les metas ayant déjà été envoyées, on cherche les metadata correspondantes
         fileStorageService.storeFile(fileContent,fileMetadata);
     }
 

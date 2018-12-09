@@ -44,6 +44,9 @@ public class MainFrameController {
         runButtonListeners();
     }
 
+    /**
+     * Fonction d'inintialisation de tous les éléments de la fenetre
+     */
     private void initMainFrame() {
         connectionPort = DEFAULT_PORT;
         selectedFolderPath = DEFAULT_FOLDER_PATH;
@@ -55,11 +58,17 @@ public class MainFrameController {
         mainframe.getDefaultPortParam().setText(Integer.toString(DEFAULT_PORT)); // default port, can't change during execution
     }
 
+    /**
+     * Fonction pour mettre à jour les champs de texte en fonction des paramètres du serveur
+     */
     public void refreshParametersLabels() {
         mainframe.getSelectedFolder().setText(selectedFolderPath);
         mainframe.getPortParamField().setText(Integer.toString(connectionPort));
     }
 
+    /**
+     * Rafraichissement de la liste des fichiers disponibles ainsi que de son affichage
+     */
     public void refreshFileList() {
         mainframe.getDownloadFileButton().setEnabled(false);
         mainframe.getDeleteFileButton().setEnabled(false);
@@ -67,9 +76,11 @@ public class MainFrameController {
         DefaultListModel<File> model = new DefaultListModel<>();
         mainframe.getFileList().setModel(model);
 
+        //On récupère la map des fichiers disponibles afin de connaitre aussi les pairs qui ont ces fichiers
         fileMap = FilesListManager.getAvailableFiles();
         fileList = FilesListManager.getFileListFromMap(fileMap);
 
+        //On les ajoute a l'affichage
         if(fileList != null) {
             for (File f : fileList) {
                 model.addElement(f);
@@ -77,6 +88,9 @@ public class MainFrameController {
         }
     }
 
+    /**
+     * Rafraichissement de la liste des fichiers locaux partagés
+     */
     public void refreshLocalFileList() {
         mainframe.getDeleteLocalFileButton().setEnabled(false);
         mainframe.getRecipientsList().setEnabled(false);
@@ -85,8 +99,10 @@ public class MainFrameController {
         DefaultListModel<File> model = new DefaultListModel<>();
         mainframe.getLocalFilesList().setModel(model);
 
+        //On lit le fichier de persistence contenant la liste des fichiers
         localFileList = FilesListManager.readFiles();
 
+        //On ajoute les fichiers à l'affichage
         if(localFileList != null) {
             for (File f : localFileList) {
                 model.addElement(f);
@@ -94,6 +110,9 @@ public class MainFrameController {
         }
     }
 
+    /**
+     * Rafraichissement de la liste des pairs
+     */
     public void refreshPeerList() {
         mainframe.getDeletePeerButton().setEnabled(false);
         mainframe.getDeleteLocalFileButton().setEnabled(false);
@@ -110,6 +129,10 @@ public class MainFrameController {
         }
     }
 
+    /**
+     * Permet d'afficher du texte dans l'encadré supérieur
+     * @param text texte à afficher
+     */
     public void setInfoMessage(String text) {
         mainframe.getInfoMessage().setText(text);
     }
@@ -121,6 +144,7 @@ public class MainFrameController {
         mainframe.getRefreshFileListButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //On rafraichit toutes les listes et on affiche un message
                 refreshFileList();
                 refreshLocalFileList();
                 refreshPeerList();
@@ -144,15 +168,19 @@ public class MainFrameController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileToDelete = null;
-                fileToDownload = (File) mainframe.getFileList().getSelectedValue();
+                fileToDownload = (File) mainframe.getFileList().getSelectedValue(); //récupération du fichier selectionné
 
+                //Si le fichier est bien téléchargé
                 if(FileClient.getFile(fileMap.get(fileToDownload).get(0).getUrl(),fileToDownload.getFileId()))
                     setInfoMessage("INFO: Fichier téléchargé");
+                //Si une erreur est survenue
                 else
                     setInfoMessage("ERREUR: Un problème est survenu lors du téléchargement du fichier");
 
+                //On rafraichit les listes de fichiers
                 refreshLocalFileList();
                 refreshFileList();
+
                 displayFileActionConsole();
             }
         });
@@ -162,15 +190,18 @@ public class MainFrameController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 fileToDownload = null;
-                fileToDelete = (File) mainframe.getFileList().getSelectedValue();
+                fileToDelete = (File) mainframe.getFileList().getSelectedValue(); //On récupère le fichier selectionné
 
+                //On récupère la liste des pairs qui partagent ce fichier grâce à la map
                 List<Peer> peers = fileMap.get(fileToDelete);
+                //On supprime le fichier sur les pairs disponibles
                 for (Peer p: peers){
                     FileClient.deleteFile(p.getUrl(),fileToDelete.getFileId());
                 }
 
                 setInfoMessage("INFO: Le fichier a été supprimé sur les pairs disponibles");
 
+                //On rafraichit les listes des fichiers
                 refreshFileList();
                 refreshLocalFileList();
 
@@ -197,11 +228,12 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 localFileToSend = null;
                 fileRecipients = null;
-                localFileToDelete = (File) mainframe.getLocalFilesList().getSelectedValue();
-                FilesListManager.deleteLocalFile(localFileToDelete.getFileId());
+                localFileToDelete = (File) mainframe.getLocalFilesList().getSelectedValue(); //On récupère le ficher selectionné
+                FilesListManager.deleteLocalFile(localFileToDelete.getFileId()); //On supprime le fichier localement
 
                 setInfoMessage("INFO: Le fichier a été supprimé du dossier de partage");
 
+                //On rafraichit les listes des fichiers
                 refreshFileList();
                 refreshLocalFileList();
 
@@ -224,24 +256,19 @@ public class MainFrameController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 localFileToDelete = null;
-                localFileToSend = (File) mainframe.getLocalFilesList().getSelectedValue();
-                fileRecipients = (List<Peer>) mainframe.getRecipientsList().getSelectedValuesList();
+                localFileToSend = (File) mainframe.getLocalFilesList().getSelectedValue(); //On récupère le fichier selectionné
+                fileRecipients = (List<Peer>) mainframe.getRecipientsList().getSelectedValuesList(); //On récupère les pairs selectionnés
                 for (Peer p: fileRecipients
                      ) {
                     try {
-                        if(!FileClient.uploadFile(p.getUrl(),localFileToSend.getFileId()))
+                        if(!FileClient.uploadFile(p.getUrl(),localFileToSend.getFileId())) //Si le fichier n'a pas été upload
                             setInfoMessage("ERREUR: Un problème est survenu lors de l'ajout du fichier sur le pair");
                         else
                             setInfoMessage("INFO: Le fichier a bien été envoyé");
-                        /*if(FileClient.uploadFileContent(p.getUrl(),localFileToSend))
-                            setInfoMessage("INFO: Le fichier a bien été envoyé");
-                        else
-                            setInfoMessage("INFO: Liste des fichiers disponibles à jour");*/
-                        System.out.println("send file "+localFileList.toString()+ " to "+p.getUrl());
+
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    //System.out.println("send file "+localFileList.toString()+ " to "+p.getUrl()); //à remplacer par un vrai upload client
                 }
                 displayLocalFileActionConsole();
             }
@@ -255,11 +282,12 @@ public class MainFrameController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 mainframe.openFileChooser();
+                //Si un dossier a été selectionné, on change le répertoire partagé et on reset le champ
                 if(mainframe.getSelectedFolder().getText() != null) {
                     selectedFolderPath = mainframe.getSelectedFolder().getText();
                     setInfoMessage("INFO: Le répertoire partagé a été modifié");
                 }
-                refreshParametersLabels();
+                refreshParametersLabels(); //on rafraichit la fenetre avec les nouveaux parametres
                 displayParamsConsole();
             }
         });
@@ -278,11 +306,11 @@ public class MainFrameController {
         mainframe.getAddPeerButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String peerUrl = mainframe.getPeerParamField().getText();
+                String peerUrl = mainframe.getPeerParamField().getText(); //on récupère l'url entrée
                 if(!mainframe.getPeerParamField().getText().isEmpty()) {
-                    if(PeersListManager.isUrlValid(peerUrl)){
-                        peerList.add(new Peer(peerUrl));
-                        PeersListManager.savePeers(peerList);
+                    if(PeersListManager.isUrlValid(peerUrl)){ //on vérifie l'integrité de l'URL entrée
+                        peerList.add(new Peer(peerUrl)); //on ajoute l'url à la liste des pairs
+                        PeersListManager.savePeers(peerList); //on sauvegarde dans le fichier de persistence
                         setInfoMessage("INFO: Le pair a bien été ajouté");
                         refreshPeerList();
                         displayParamsConsole();

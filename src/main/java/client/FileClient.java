@@ -32,11 +32,13 @@ public class FileClient {
      */
     public static List<File> getFiles(String peerUrl) {
         RestTemplate restTemplate = new RestTemplate();
+        //Ajout d'un timeout en cas de non disponibilité du serveur
         ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
         List<File> files = new ArrayList<>();
         String result;
 
         try{
+            //Envoi de la requête et stockage de la réponse dans une liste de fichiers
             result = restTemplate.getForObject(peerUrl+"/files", String.class);
             files = new ObjectMapper().readValue(result, new TypeReference<List<File>>(){});
         }
@@ -59,21 +61,18 @@ public class FileClient {
     public static boolean uploadFile(String peerUrl, String fileId)throws IOException {
         File fileToUploadMetadata = FileStorageService.getFileMetadataByFileId(fileId);
         RestTemplate restTemplate = new RestTemplate();
+        //Ajout d'un timeout en cas de non disponibilité du serveur
         ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
-        String result;
 
         try{
             restTemplate.postForObject(peerUrl+"/files", fileToUploadMetadata, File.class);
         }
         catch (RestClientException e){
-            System.out.println("Erreur dans l'upload des meta");
             return false;
         }
 
+        //Si l'envoi de metadata a fonctionné, on passe à l'envoi du contenu
         return uploadFileContent(peerUrl+"/files",fileToUploadMetadata);
-
-
-        //System.out.println(fileToUploadMetadata.toString);
     }
 
     /**
@@ -82,49 +81,45 @@ public class FileClient {
     public static boolean uploadFileContent(String peerUrl, File fileMetadata) throws IOException {
         FileContent fileContent = FileStorageService.getFileContentByFileMetadata(fileMetadata);
         RestTemplate restTemplate = new RestTemplate();
+        //Ajout d'un timeout en cas de non disponibilité du serveur
         ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
-        String result;
 
         try{
             restTemplate.postForObject(peerUrl+"/"+fileMetadata.getFileId(), fileContent, FileContent.class);
         }
         catch (RestClientException e){
-            System.out.println("Erreur dans l'upload des meta");
             return false;
         }
-
         return true;
     }
 
     /**
      * Fonction de gestion du GET de l'URL /files/{fileId} côté client
      */
-    public static boolean getFile(String peerUrl, String fileid) {
-        RestTemplate restTemplate = new RestTemplate();
-        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
+    public static boolean getFile(String peerUrl, String fileId) {
         String result = null;
         List<File> files = getFiles(peerUrl);
         File fileToDownload = null;
         FileContent fileContent = null;
+        RestTemplate restTemplate = new RestTemplate();
+        //Ajout d'un timeout en cas de non disponibilité du serveur
+        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
 
         for (File f: files) {
-            if(f.getFileId().equals(fileid)){
+            //Si le fichier a été trouvé dans le répertoire
+            if(f.getFileId().equals(fileId)){
                 fileToDownload = f;
                 break;
             }
         }
 
-        if(fileToDownload==null){
+        if(fileToDownload==null){ //Si le fichier n'a pas été trouvé
             return false;
         }
         else{
-            result = restTemplate.getForObject(peerUrl+"/files/"+fileid, String.class);
+            result = restTemplate.getForObject(peerUrl+"/files/"+fileId, String.class);
 
-            //Uncomment to test local
-            /*fileToDownload.setName("clone_"+fileToDownload.getName());
-            fileToDownload.setFileId("5"+fileToDownload.getFileId());*/
-
-            try {
+            try { //On récupère le contenu du fichier, qu'on decode et qu'on stocke dans le répertoire partagé
                 fileContent = new ObjectMapper().readValue(result, FileContent.class);
                 byte[] data = fileContent.decode();
                 try (OutputStream stream = new FileOutputStream(FileStorageProperties.getUploadDir()+"/"+fileToDownload.getName())) {
@@ -143,11 +138,14 @@ public class FileClient {
      */
     public static boolean deleteFile(String peerUrl, String fileid) {
         Map<String, String> params = new HashMap<>();
+        //On ajoute les données dans une map
         params.put("fileId",fileid);
         RestTemplate restTemplate = new RestTemplate();
+        //Ajout d'un timeout en cas de non disponibilité du serveur
         ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
 
         try{
+            //On envoie au serveur les informations pour supprimer le fichier
             restTemplate.delete(peerUrl+"/files" +"/{fileId}",params);
         }
         catch (RestClientException e){

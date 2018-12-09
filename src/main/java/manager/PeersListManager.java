@@ -44,6 +44,11 @@ public class PeersListManager {
         return peers;
     }
 
+    /**
+     * Permet de vérifier l'integrité d'une URL
+     * @param peerUrl url à verifier
+     * @return true si l'url est valide, false sinon
+     */
     public static boolean isUrlValid(String peerUrl){
         try
         {
