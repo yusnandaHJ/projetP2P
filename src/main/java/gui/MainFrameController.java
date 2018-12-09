@@ -1,6 +1,7 @@
 package gui;
 
 import client.FileClient;
+import client.PeerClient;
 import manager.FilesListManager;
 import manager.PeersListManager;
 import property.FileStorageProperties;
@@ -309,10 +310,16 @@ public class MainFrameController {
                 String peerUrl = mainframe.getPeerParamField().getText(); //on récupère l'url entrée
                 if(!mainframe.getPeerParamField().getText().isEmpty()) {
                     if(PeersListManager.isUrlValid(peerUrl)){ //on vérifie l'integrité de l'URL entrée
-                        peerList.add(new Peer(peerUrl)); //on ajoute l'url à la liste des pairs
-                        PeersListManager.savePeers(peerList); //on sauvegarde dans le fichier de persistence
-                        setInfoMessage("INFO: Le pair a bien été ajouté");
-                        refreshPeerList();
+                        if(PeerClient.registerPeers(peerUrl)){
+                            peerList.add(new Peer(peerUrl)); //on ajoute l'url à la liste des pairs
+                            PeersListManager.savePeers(peerList); //on sauvegarde dans le fichier de persistence
+                            setInfoMessage("INFO: Le pair a bien été ajouté");
+                            refreshPeerList();
+                        }
+                        else{
+                            setInfoMessage("ERREUR: Le pair n'est pas disponible");
+                        }
+
                         displayParamsConsole();
                     }
                     else
@@ -328,11 +335,18 @@ public class MainFrameController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JList pl = mainframe.getPeerList();
-                peerList.remove(pl.getSelectedValue());
-                ((DefaultListModel) pl.getModel()).remove(pl.getSelectedIndex());
-                PeersListManager.savePeers(peerList);
-                setInfoMessage("INFO: Pair supprimé");
-                refreshPeerList();
+                Peer p = (Peer)pl.getSelectedValue();
+                if(PeerClient.unregisterPeer(p.getUrl())){
+                    peerList.remove(pl.getSelectedValue());
+                    ((DefaultListModel) pl.getModel()).remove(pl.getSelectedIndex());
+                    PeersListManager.savePeers(peerList);
+                    setInfoMessage("INFO: Pair supprimé");
+                    refreshPeerList();
+                }
+                else{
+                    setInfoMessage("ERREUR: Le pair n'est pas disponible, essayez plus tard");
+                }
+
                 displayParamsConsole();
             }
         });

@@ -60,13 +60,14 @@ public class PeerClient {
     /**
      * Fonction de gestion du DELETE de l'URL /peers/url côté client
      */
-    public static boolean unregisterPeer(String peerUrl, String url) {
+    public static boolean unregisterPeer(String peerUrl) {
+        Peer self = new Peer("http://"+PeerServerProperties.getAddress()+":"+PeerServerProperties.getPort());
         RestTemplate restTemplate = new RestTemplate();
         //Ajout d'un timeout en cas de non disponibilité du serveur
         ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
         String desturi = peerUrl + "/peers"+"/{url}";
         Map<String, String> params = new HashMap<>();
-        params.put("url",url);
+        params.put("url",self.getUrl());
 
         try{
             //On envoie au serveur les informations pour supprimer le pair
