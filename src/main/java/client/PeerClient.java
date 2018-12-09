@@ -16,8 +16,6 @@ import java.util.Map;
  */
 public class PeerClient {
 
-    private static final String uri = "http://localhost:8080/peers";
-
     /**
      * Fonction de gestion du GET de l'URL /peers côté client
      */
@@ -46,8 +44,6 @@ public class PeerClient {
         RestTemplate restTemplate = new RestTemplate();
 
         restTemplate.postForObject(peerUrl + "/peers", self, Peer.class);
-
-        //System.out.println(result);
     }
 
     /**
@@ -55,13 +51,11 @@ public class PeerClient {
      */
     public static void unregisterPeer(String peerUrl, String url) {
         String desturi = peerUrl + "/peers"+"/{url}";
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("url",url);
 
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(desturi,params);
-
-        //System.out.println(result);
     }
 
 }

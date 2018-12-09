@@ -5,11 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import manager.FilesListManager;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.http.*;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import property.FileStorageProperties;
@@ -18,28 +14,18 @@ import representation.FileContent;
 import service.FileStorageService;
 
 import java.io.OutputStream;
-import java.net.*;
 import java.util.List;
 import java.util.Map;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Classe des fonctions gérant les fichiers côté client
  */
 public class FileClient {
-
-    private static final String uri = "http://localhost:8080/files";
-    //private static final String uri = "http://192.168.0.4:7878/files";
 
     /**
      * Fonction de gestion du GET de l'URL /files côté client

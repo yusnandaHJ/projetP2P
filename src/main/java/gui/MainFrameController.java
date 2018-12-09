@@ -1,13 +1,11 @@
 package gui;
 
 import client.FileClient;
-import client.PeerClient;
 import manager.FilesListManager;
 import manager.PeersListManager;
 import property.FileStorageProperties;
 import representation.File;
 import representation.Peer;
-import server.FileController;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -17,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 
