@@ -121,6 +121,7 @@ public class MainFrameController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 refreshFileList();
+                refreshLocalFileList();
             }
         });
 

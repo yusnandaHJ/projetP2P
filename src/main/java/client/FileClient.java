@@ -44,7 +44,6 @@ public class FileClient {
     /**
      * Fonction de gestion du GET de l'URL /files côté client
      */
-
     public static List<File> getFiles(String peerUrl) {
         RestTemplate restTemplate = new RestTemplate();
         ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
@@ -114,11 +113,13 @@ public class FileClient {
     /**
      * Fonction de gestion du GET de l'URL /files/{fileId} côté client
      */
-    public static void getFile(String peerUrl, String fileid) {
+    public static boolean getFile(String peerUrl, String fileid) {
         RestTemplate restTemplate = new RestTemplate();
+        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
         String result = null;
         List<File> files = getFiles(peerUrl);
         File fileToDownload = null;
+        FileContent fileContent = null;
 
         for (File f: files) {
             if(f.getFileId().equals(fileid)){
@@ -127,13 +128,15 @@ public class FileClient {
             }
         }
 
-        if(fileToDownload != null){
+        if(fileToDownload==null){
+            return false;
+        }
+        else{
             result = restTemplate.getForObject(peerUrl+"/files/"+fileid, String.class);
-            FileContent fileContent = new FileContent();
 
             //Uncomment to test local
-            fileToDownload.setName("clone_"+fileToDownload.getName());
-            fileToDownload.setFileId("5"+fileToDownload.getFileId());
+            /*fileToDownload.setName("clone_"+fileToDownload.getName());
+            fileToDownload.setFileId("5"+fileToDownload.getFileId());*/
 
             try {
                 fileContent = new ObjectMapper().readValue(result, FileContent.class);
@@ -146,19 +149,27 @@ public class FileClient {
                 e.printStackTrace();
             }
         }
+        return true;
     }
 
     /**
      * Fonction de gestion du DELETE de l'URL /files/[fileId} côté client
      */
-    public static void deleteFile(String peerUrl, String fileid) {
-        Map<String, String> params = new HashMap<String, String>();
+    public static boolean deleteFile(String peerUrl, String fileid) {
+        Map<String, String> params = new HashMap<>();
         params.put("fileId",fileid);
-
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete(peerUrl+"/files" +"/{fileId}",params);
+        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
 
-        //System.out.println(result);
+        try{
+            restTemplate.delete(peerUrl+"/files" +"/{fileId}",params);
+        }
+        catch (RestClientException e){
+            System.out.println("Erreur dans la suppression du fichier");
+            return false;
+        }
+
+        return true;
     }
 
 }
