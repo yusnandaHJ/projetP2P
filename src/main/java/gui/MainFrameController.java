@@ -156,6 +156,7 @@ public class MainFrameController {
 
                 List<Peer> peers = fileMap.get(fileToDelete);
                 for (Peer p: peers){
+                    //SSystem.out.println(fileToDelete);
                     FileClient.deleteFile(p.getUrl(),fileToDelete.getFileId());
                 }
                 displayFileActionConsole();

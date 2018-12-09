@@ -86,7 +86,7 @@ public class FileController {
             File file = fileIterator.next();
             if (file.getFileId().equals(fileId)) {
                 fileName = file.getName();
-                java.io.File fileToDelete = new java.io.File(this.storageDirectoryPath + fileName);
+                java.io.File fileToDelete = new java.io.File(FileStorageProperties.getUploadDir() + "/" + fileName);
                 fileIterator.remove();
                 fileToDelete.delete();
             }

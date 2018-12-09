@@ -39,8 +39,6 @@ public class FileClient {
         List<File> files = new ArrayList<>();
         String result = restTemplate.getForObject(peerUrl+"/files", String.class);
 
-        //System.out.println(result);
-
         try {
             files = new ObjectMapper().readValue(result, new TypeReference<List<File>>(){});
         } catch (IOException e) {

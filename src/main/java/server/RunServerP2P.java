@@ -52,6 +52,7 @@ public class RunServerP2P extends JFrame {
         System.out.println(FilesListManager.getAvailableFiles().size());
 
         HashMap<File,List<Peer>> files = FilesListManager.getAvailableFiles();
+        
 
         /*Iterator it = files.entrySet().iterator();
         while(it.hasNext()){
