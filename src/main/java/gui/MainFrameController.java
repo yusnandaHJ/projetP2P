@@ -219,7 +219,14 @@ public class MainFrameController {
                 fileRecipients = (List<Peer>) mainframe.getRecipientsList().getSelectedValuesList();
                 for (Peer p: fileRecipients
                      ) {
-                    System.out.println("send file "+localFileList.toString()+ " to "+p.getUrl()); //à remplacer par un vrai upload client
+                    try {
+                        FileClient.uploadFile(p.getUrl(),localFileToSend.getFileId());
+                        FileClient.uploadFileContent(p.getUrl(),localFileToSend);
+                        System.out.println("send file "+localFileList.toString()+ " to "+p.getUrl());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    //System.out.println("send file "+localFileList.toString()+ " to "+p.getUrl()); //à remplacer par un vrai upload client
                 }
                 displayLocalFileActionConsole();
             }
