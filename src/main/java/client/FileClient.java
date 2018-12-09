@@ -1,9 +1,16 @@
 package client;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import manager.FilesListManager;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import property.FileStorageProperties;
 import representation.File;
@@ -40,11 +47,20 @@ public class FileClient {
 
     public static List<File> getFiles(String peerUrl) {
         RestTemplate restTemplate = new RestTemplate();
+        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
         List<File> files = new ArrayList<>();
-        String result = restTemplate.getForObject(peerUrl+"/files", String.class);
+        String result;
 
-        try {
+        try{
+            result = restTemplate.getForObject(peerUrl+"/files", String.class);
             files = new ObjectMapper().readValue(result, new TypeReference<List<File>>(){});
+        }
+        catch (RestClientException e){
+            return new ArrayList<>();
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,14 +71,22 @@ public class FileClient {
     /**
      * Fonction de gestion du POST de l'URL /files côté client
      */
-    public static void uploadFile(String peerUrl, String fileId)throws IOException {
-
+    public static boolean uploadFile(String peerUrl, String fileId)throws IOException {
         File fileToUploadMetadata = FileStorageService.getFileMetadataByFileId(fileId);
-
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(peerUrl+"/files", fileToUploadMetadata, File.class);
+        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
+        String result;
 
-        uploadFileContent(peerUrl+"/files",fileToUploadMetadata);
+        try{
+            restTemplate.postForObject(peerUrl+"/files", fileToUploadMetadata, File.class);
+        }
+        catch (RestClientException e){
+            System.out.println("Erreur dans l'upload des meta");
+            return false;
+        }
+
+        return uploadFileContent(peerUrl+"/files",fileToUploadMetadata);
+
 
         //System.out.println(fileToUploadMetadata.toString);
     }
@@ -70,13 +94,21 @@ public class FileClient {
     /**
      * Fonction de gestion du POST de l'URL /files/fileId côté client
      */
-    public static void uploadFileContent(String peerUrl, File fileMetadata) throws IOException {
+    public static boolean uploadFileContent(String peerUrl, File fileMetadata) throws IOException {
         FileContent fileContent = FileStorageService.getFileContentByFileMetadata(fileMetadata);
-
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForObject(peerUrl+"/"+fileMetadata.getFileId(), fileContent, FileContent.class);
+        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
+        String result;
 
-        //System.out.println(fileContent.getContent());
+        try{
+            restTemplate.postForObject(peerUrl+"/"+fileMetadata.getFileId(), fileContent, FileContent.class);
+        }
+        catch (RestClientException e){
+            System.out.println("Erreur dans l'upload des meta");
+            return false;
+        }
+
+        return true;
     }
 
     /**
