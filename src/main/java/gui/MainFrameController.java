@@ -113,6 +113,10 @@ public class MainFrameController {
         }
     }
 
+    public void setInfoMessage(String text) {
+        mainframe.getInfoMessage().setText(text);
+    }
+
     public void runButtonListeners() {
         /*------------------ Download Tab Listeners --------------------*/
 
