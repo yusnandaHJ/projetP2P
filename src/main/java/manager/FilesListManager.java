@@ -42,7 +42,18 @@ public class FilesListManager {
     }
 
     public static void deleteLocalFile(String fileId){
-
+        List<File> fileList = FilesListManager.readFiles();
+        String fileName = null;
+        for (Iterator<File> fileIterator = fileList.iterator(); fileIterator.hasNext(); ) {
+            File file = fileIterator.next();
+            if (file.getFileId().equals(fileId)) {
+                fileName = file.getName();
+                java.io.File fileToDelete = new java.io.File(FileStorageProperties.getUploadDir() + "/" + fileName);
+                fileIterator.remove();
+                fileToDelete.delete();
+            }
+        }
+        FilesListManager.saveFiles(fileList);
     }
 
     public static void initFileList(){

@@ -6,6 +6,7 @@ import manager.FilesListManager;
 import manager.PeersListManager;
 import representation.File;
 import representation.Peer;
+import server.FileController;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -139,7 +140,10 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 fileToDelete = null;
                 fileToDownload = (File) mainframe.getFileList().getSelectedValue();
+
+                //Maybe loop to ping
                 FileClient.getFile(fileMap.get(fileToDownload).get(0).getUrl(),fileToDownload.getFileId());
+
                 refreshLocalFileList();
                 refreshFileList();
                 displayFileActionConsole();
@@ -186,6 +190,11 @@ public class MainFrameController {
                 localFileToSend = null;
                 fileRecipients = null;
                 localFileToDelete = (File) mainframe.getLocalFilesList().getSelectedValue();
+                FilesListManager.deleteLocalFile(localFileToDelete.getFileId());
+
+                refreshFileList();
+                refreshLocalFileList();
+
                 displayLocalFileActionConsole();
             }
         });
