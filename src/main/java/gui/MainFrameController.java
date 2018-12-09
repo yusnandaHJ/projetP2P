@@ -123,6 +123,8 @@ public class MainFrameController {
         mainframe.getPeerList().setModel(model);
         mainframe.getRecipientsList().setModel(model);
 
+        peerList = PeersListManager.readPeers();
+
         if(peerList != null) {
             for (Peer p : peerList) {
                 model.addElement(p);
