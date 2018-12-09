@@ -140,6 +140,8 @@ public class MainFrameController {
                 fileToDelete = null;
                 fileToDownload = (File) mainframe.getFileList().getSelectedValue();
                 FileClient.getFile(fileMap.get(fileToDownload).get(0).getUrl(),fileToDownload.getFileId());
+                refreshLocalFileList();
+                refreshFileList();
                 displayFileActionConsole();
             }
         });
@@ -156,6 +158,10 @@ public class MainFrameController {
                     //SSystem.out.println(fileToDelete);
                     FileClient.deleteFile(p.getUrl(),fileToDelete.getFileId());
                 }
+
+                refreshFileList();
+                refreshLocalFileList();
+
                 displayFileActionConsole();
             }
         });

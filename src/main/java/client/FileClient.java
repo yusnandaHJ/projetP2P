@@ -100,8 +100,8 @@ public class FileClient {
             FileContent fileContent = new FileContent();
 
             //Uncomment to test local
-            /*fileToDownload.setName("clone_"+fileToDownload.getName());
-            fileToDownload.setFileId("5"+fileToDownload.getFileId());*/
+            fileToDownload.setName("clone_"+fileToDownload.getName());
+            fileToDownload.setFileId("5"+fileToDownload.getFileId());
 
             try {
                 fileContent = new ObjectMapper().readValue(result, FileContent.class);

@@ -41,6 +41,10 @@ public class FilesListManager {
         saveFiles(files);
     }
 
+    public static void deleteLocalFile(String fileId){
+
+    }
+
     public static void initFileList(){
         List<representation.File> fileListMetadata = new ArrayList<>();
         String test = FileStorageProperties.getUploadDir();
