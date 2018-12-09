@@ -35,6 +35,12 @@ public class FilesListManager {
         }
     }
 
+    public static void addFile(File file){
+        List<File> files = readFiles();
+        files.add(file);
+        saveFiles(files);
+    }
+
     public static void initFileList(){
         List<representation.File> fileListMetadata = new ArrayList<>();
         String test = FileStorageProperties.getUploadDir();

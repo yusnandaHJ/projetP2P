@@ -10,6 +10,7 @@ import representation.File;
 import representation.FileContent;
 import service.FileStorageService;
 
+import java.io.OutputStream;
 import java.net.*;
 import java.util.List;
 import java.util.Map;
@@ -81,28 +82,38 @@ public class FileClient {
     /**
      * Fonction de gestion du GET de l'URL /files/{fileId} côté client
      */
-
     public static void getFile(String peerUrl, String fileid) {
-        URL obj = null;
+        RestTemplate restTemplate = new RestTemplate();
+        String result = null;
+        List<File> files = getFiles(peerUrl);
+        File fileToDownload = null;
 
-        try {
-            obj = new URL(peerUrl+"/files" + "/" + fileid);
-            URLConnection conn = obj.openConnection();
-            Map<String, List<String>> map = conn.getHeaderFields();
-
-            System.out.println("Printing Response Header...\n");
-
-            String filename = conn.getHeaderField("Content-Disposition").substring(22,conn.getHeaderField("Content-Disposition").length()-1);
-            filename = URLDecoder.decode(filename,"UTF-8");
-            System.out.println(filename);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (File f: files) {
+            if(f.getFileId().equals(fileid)){
+                fileToDownload = f;
+                break;
+            }
         }
 
+        if(fileToDownload != null){
+            result = restTemplate.getForObject(peerUrl+"/files/"+fileid, String.class);
+            FileContent fileContent = new FileContent();
 
+            //Uncomment to test local
+            /*fileToDownload.setName("clone_"+fileToDownload.getName());
+            fileToDownload.setFileId("5"+fileToDownload.getFileId());*/
+
+            try {
+                fileContent = new ObjectMapper().readValue(result, FileContent.class);
+                byte[] data = fileContent.decode();
+                try (OutputStream stream = new FileOutputStream(FileStorageProperties.getUploadDir()+"/"+fileToDownload.getName())) {
+                    stream.write(data);
+                    FilesListManager.addFile(fileToDownload);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

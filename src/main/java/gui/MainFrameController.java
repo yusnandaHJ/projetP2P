@@ -139,6 +139,7 @@ public class MainFrameController {
             public void actionPerformed(ActionEvent e) {
                 fileToDelete = null;
                 fileToDownload = (File) mainframe.getFileList().getSelectedValue();
+                FileClient.getFile(fileMap.get(fileToDownload).get(0).getUrl(),fileToDownload.getFileId());
                 displayFileActionConsole();
             }
         });
