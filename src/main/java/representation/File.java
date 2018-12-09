@@ -23,7 +23,7 @@ public class File {
     }
 
     public File(String name) throws IOException {
-        Path file = FileSystems.getDefault().getPath(storageDirectoryPath, name);
+        Path file = FileSystems.getDefault().getPath(FileStorageProperties.getUploadDir(), name);
         BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
 
         this.name = file.getFileName().toString();
