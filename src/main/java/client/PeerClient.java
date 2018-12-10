@@ -44,7 +44,7 @@ public class PeerClient {
         Peer self = new Peer("http://"+PeerServerProperties.getAddress()+":"+PeerServerProperties.getPort());
         RestTemplate restTemplate = new RestTemplate();
         //Ajout d'un timeout en cas de non disponibilité du serveur
-        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(300);
+        ((SimpleClientHttpRequestFactory)restTemplate.getRequestFactory()).setConnectTimeout(1000);
 
         try{
             //On envoie au serveur les informations sur notre pair
